@@ -7,10 +7,9 @@ import AiBriefing from './components/AiBriefing';
 import SourceCitation from './components/SourceCitation';
 import AnalyticsPage from './components/AnalyticsPage';
 import ArchitectureView from './components/ArchitectureView';
-import IdeaPitchPage from './components/IdeaPitchPage';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState('pitch'); // 5주차 발표 대응 기본값 pitch (또는 briefing)
+  const [activeTab, setActiveTab] = useState('briefing'); // Default to live financial briefing terminal
   const [companies, setCompanies] = useState([]);
   const [demoCases, setDemoCases] = useState([]);
   const [selectedCorpCode, setSelectedCorpCode] = useState('00126380'); // 삼성전자
@@ -92,17 +91,13 @@ export default function App() {
   const currentCompanyName = companies.find(c => c.corp_code === selectedCorpCode)?.corp_name || '삼성전자';
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
+    <div className="min-h-screen bg-[#08090d] text-slate-100 flex flex-col font-sans selection:bg-amber-500 selection:text-black">
       <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {activeTab === 'pitch' && (
-          <IdeaPitchPage onGoToPrototype={() => setActiveTab('briefing')} />
-        )}
-
         {activeTab === 'briefing' && (
           <>
-            {/* Top Demo Case Presets (Required for RAG Live Demo) */}
+            {/* Top Featured Research Cases (Bloomberg Curated Style) */}
             <DemoPresets
               demoCases={demoCases}
               onSelectCase={handleSelectDemoCase}
@@ -110,7 +105,7 @@ export default function App() {
               isLoading={isLoading}
             />
 
-            {/* Input Form */}
+            {/* Bloomberg Query & Security Selector Bar */}
             <CompanySelector
               companies={companies}
               selectedCorpCode={selectedCorpCode}
@@ -123,14 +118,14 @@ export default function App() {
               isLoading={isLoading}
             />
 
-            {/* Calculated Metrics Card (YoY Changes) */}
+            {/* Financial Performance KPI Metrics */}
             <MetricsCard
               metrics={metrics}
               companyName={currentCompanyName}
               year={selectedYear}
             />
 
-            {/* AI Generated Briefing */}
+            {/* Bloomberg Intelligence Equity Research Note */}
             <AiBriefing
               briefing={briefing}
               isLoading={isLoading}
@@ -138,7 +133,7 @@ export default function App() {
               onRetry={handleManualSubmit}
             />
 
-            {/* Source Citations with DART Links */}
+            {/* Regulatory Audit Trail: DART Citations */}
             <SourceCitation sources={sources} />
           </>
         )}
@@ -152,11 +147,18 @@ export default function App() {
         )}
       </main>
 
-      {/* Footer */}
-      <footer className="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <span>8주차 프로젝트: DART 기업 실적 변화 브리핑 AI (React + FastAPI + Supabase pgvector)</span>
-          <span className="font-mono">Vercel & Render Deployment Ready</span>
+      {/* Bloomberg Terminal Style Footer */}
+      <footer className="bg-[#0c0d13] border-t border-[#1c1f2e] py-6 text-center text-xs text-slate-500 font-mono">
+        <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <span className="font-bold text-slate-300">DART TERMINAL INTELLIGENCE</span>
+            <span className="text-slate-600">|</span>
+            <span>FINANCIAL SUPERVISORY SERVICE DATA POWERED</span>
+          </div>
+          <div className="flex items-center gap-4 text-[11px] text-slate-400">
+            <span>ENTERPRISE RAG ARCHITECTURE</span>
+            <span className="text-emerald-400 font-semibold">ALL SYSTEMS NOMINAL</span>
+          </div>
         </div>
       </footer>
     </div>

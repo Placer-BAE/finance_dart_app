@@ -1,50 +1,54 @@
 import React from 'react';
-import { Sparkles, ArrowRight, TrendingDown, TrendingUp, AlertCircle } from 'lucide-react';
+import { TrendingDown, TrendingUp, AlertCircle, ArrowUpRight, CheckCircle2 } from 'lucide-react';
 
 export default function DemoPresets({ demoCases, onSelectCase, selectedCaseId, isLoading }) {
   const getBadgeStyle = (color) => {
     switch (color) {
       case 'red':
-        return 'bg-rose-50 text-rose-700 border-rose-200';
+        return 'bg-rose-500/10 text-rose-400 border-rose-500/30';
       case 'green':
-        return 'bg-emerald-50 text-emerald-700 border-emerald-200';
+        return 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30';
       case 'purple':
-        return 'bg-purple-50 text-purple-700 border-purple-200';
+        return 'bg-amber-500/10 text-amber-400 border-amber-500/30';
       default:
-        return 'bg-blue-50 text-blue-700 border-blue-200';
+        return 'bg-blue-500/10 text-blue-400 border-blue-500/30';
     }
   };
 
   const getIcon = (color) => {
     switch (color) {
       case 'red':
-        return <TrendingDown className="w-4 h-4 text-rose-600" />;
+        return <TrendingDown className="w-3.5 h-3.5 text-rose-400" />;
       case 'green':
-        return <TrendingUp className="w-4 h-4 text-emerald-600" />;
+        return <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />;
       case 'purple':
-        return <AlertCircle className="w-4 h-4 text-purple-600" />;
+        return <AlertCircle className="w-3.5 h-3.5 text-amber-400" />;
       default:
-        return <Sparkles className="w-4 h-4 text-blue-600" />;
+        return <ArrowUpRight className="w-3.5 h-3.5 text-blue-400" />;
     }
   };
 
   return (
-    <section className="bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 text-white rounded-2xl p-6 sm:p-8 shadow-xl relative overflow-hidden mb-8">
-      {/* Background Glow */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
-
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+    <section className="bg-[#0f111a] border border-[#232738] rounded-2xl p-6 sm:p-7 shadow-xl mb-8 relative overflow-hidden">
+      {/* Subtle Terminal Grid Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-[#232738]">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-500/20 border border-blue-400/30 rounded-full text-xs font-semibold text-blue-300 mb-2">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>과제 평가 필수 요건: RAG 우수 사례 3건 실시간 시연</span>
+          <div className="flex items-center gap-2 mb-1.5">
+            <span className="w-2 h-2 rounded-full bg-amber-400"></span>
+            <span className="text-[11px] font-mono font-bold tracking-widest text-amber-400 uppercase">
+              FEATURED EQUITY RESEARCH · DISCLOSURE INTELLIGENCE
+            </span>
           </div>
-          <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white">
-            실시간 RAG 공시 분석 우수 사례 프리셋
+          <h2 className="text-lg sm:text-xl font-bold tracking-tight text-white font-sans">
+            실적 시즌 핵심 분석 기업 (Market Highlights)
           </h2>
-          <p className="text-sm text-slate-300 mt-1">
-            원클릭으로 사업보고서 원문 발췌, 코사인 유사도 검색, 정량 지표 계산 및 AI 브리핑을 실시간 시연합니다.
+          <p className="text-xs text-slate-400 mt-0.5">
+            기업과 연도를 선택하면 DART 사업보고서 공시 원문(MD&A)을 벡터 검색하여 실적 변동 원인을 즉시 브리핑합니다.
           </p>
+        </div>
+        <div className="text-right hidden sm:block font-mono text-[11px] text-slate-500">
+          <div>RAG PIPELINE: ACTIVE</div>
+          <div className="text-slate-400">INDEX: KOSPI TOP TIER</div>
         </div>
       </div>
 
@@ -55,50 +59,50 @@ export default function DemoPresets({ demoCases, onSelectCase, selectedCaseId, i
             <div
               key={c.id}
               onClick={() => !isLoading && onSelectCase(c)}
-              className={`group text-left p-5 rounded-xl border transition-all cursor-pointer relative bg-white/5 backdrop-blur-sm ${
+              className={`group text-left p-5 rounded-xl border transition-all cursor-pointer relative ${
                 isSelected
-                  ? 'border-blue-400 bg-white/10 ring-2 ring-blue-400/50 shadow-lg'
-                  : 'border-white/10 hover:border-blue-400/50 hover:bg-white/10'
+                  ? 'border-amber-500/80 bg-[#161a26] ring-1 ring-amber-500/40 shadow-lg'
+                  : 'border-[#232738] bg-[#121520] hover:border-slate-500/50 hover:bg-[#161926]'
               } ${isLoading ? 'opacity-70 pointer-events-none' : ''}`}
             >
               <div className="flex items-center justify-between gap-2 mb-3">
-                <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold border ${getBadgeStyle(c.badge_color)}`}>
+                <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-[11px] font-mono font-bold border ${getBadgeStyle(c.badge_color)}`}>
                   {getIcon(c.badge_color)}
                   {c.badge}
                 </span>
-                <span className="text-xs text-slate-300 font-mono">
-                  {c.corp_name} ({c.year}년)
+                <span className="text-xs text-slate-400 font-mono font-bold">
+                  {c.stock_code}.KS
                 </span>
               </div>
 
-              <h3 className="font-semibold text-base text-white group-hover:text-blue-300 transition-colors mb-2 leading-snug">
+              <div className="text-xs font-mono text-slate-400 mb-1">
+                {c.corp_name} · {c.year}년 사업보고서
+              </div>
+
+              <h3 className="font-bold text-sm text-white group-hover:text-amber-300 transition-colors mb-2.5 leading-snug">
                 {c.title}
               </h3>
 
-              <p className="text-xs text-slate-300 line-clamp-2 mb-4 leading-relaxed">
-                {c.description}
-              </p>
-
-              <div className="border-t border-white/10 pt-3">
-                <ul className="text-xs text-slate-300 space-y-1 mb-4">
+              <div className="border-t border-[#232738] pt-3">
+                <ul className="text-xs text-slate-300 space-y-1.5 mb-4 font-sans">
                   {c.highlights.map((h, idx) => (
                     <li key={idx} className="flex items-start gap-1.5">
-                      <span className="text-blue-400 text-xs font-bold">•</span>
-                      <span>{h}</span>
+                      <span className="text-amber-400 text-xs font-bold">•</span>
+                      <span className="leading-tight">{h}</span>
                     </li>
                   ))}
                 </ul>
 
                 <button
                   disabled={isLoading}
-                  className={`w-full py-2 px-3 text-xs font-semibold rounded-lg flex items-center justify-center gap-1.5 transition-all ${
+                  className={`w-full py-2 px-3 text-xs font-mono font-semibold rounded-lg flex items-center justify-center gap-1.5 transition-all ${
                     isSelected
-                      ? 'bg-blue-500 text-white shadow-md'
-                      : 'bg-white/10 hover:bg-blue-600 text-white'
+                      ? 'bg-amber-500 text-black font-bold shadow-md'
+                      : 'bg-[#1e2233] hover:bg-amber-500 hover:text-black text-slate-200'
                   }`}
                 >
-                  <span>{isSelected && isLoading ? 'RAG 분석 실행 중...' : '이 사례 실시간 시연하기'}</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
+                  <span>{isSelected && isLoading ? 'ANALYZING...' : '이 기업 실적 브리핑 열기'}</span>
+                  <ArrowUpRight className="w-3.5 h-3.5" />
                 </button>
               </div>
             </div>

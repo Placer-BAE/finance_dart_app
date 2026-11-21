@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Database, Server, Globe, GitBranch, CheckCircle2, Copy, Check } from 'lucide-react';
+import { Database, Server, Globe, GitBranch, Check, Copy, Terminal } from 'lucide-react';
 
 export default function ArchitectureView() {
   const [copied, setCopied] = useState(false);
@@ -36,94 +36,99 @@ USING hnsw (embedding vector_cosine_ops);`;
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 text-slate-100">
       {/* 4-Tier Stack Overview */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm">
-        <h3 className="text-lg font-bold text-slate-900 mb-2">
-          과제 요구사항: 풀스택 기술 스택 및 배포 구조
-        </h3>
-        <p className="text-sm text-slate-600 mb-6">
-          본 프로젝트는 요구사항에 명시된 React + FastAPI + Supabase pgvector + GitHub 배포 파이프라인으로 구성되었습니다.
+      <div className="bg-[#10121a] rounded-2xl border border-[#232738] p-6 sm:p-8 shadow-sm">
+        <div className="flex items-center gap-2 mb-2 font-mono">
+          <Terminal className="w-4 h-4 text-amber-400" />
+          <h3 className="text-base font-bold text-white uppercase tracking-wider">
+            SYSTEM ARCHITECTURE & CLOUD INFRASTRUCTURE
+          </h3>
+        </div>
+        <p className="text-xs text-slate-400 mb-6 font-sans">
+          DART Terminal은 React, FastAPI, Supabase pgvector, GitHub 배포 파이프라인으로 구성된 금융 데이터 분석 시스템입니다.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {/* Frontend */}
-          <div className="p-5 rounded-xl border border-blue-200 bg-blue-50/40">
-            <div className="w-9 h-9 rounded-lg bg-blue-600 text-white flex items-center justify-center mb-3">
-              <Globe className="w-5 h-5" />
+          <div className="p-5 rounded-xl border border-[#232738] bg-[#141622]">
+            <div className="w-8 h-8 rounded-lg bg-blue-500/10 border border-blue-500/30 text-blue-400 flex items-center justify-center mb-3">
+              <Globe className="w-4 h-4" />
             </div>
-            <span className="text-xs font-bold text-blue-600 uppercase">프론트엔드</span>
-            <h4 className="font-bold text-slate-900 mt-1">React (Vite)</h4>
-            <div className="text-xs text-slate-600 mt-2 space-y-1">
-              <div>• 입력·로딩·오류·응답·출처 표시</div>
-              <div>• 분석 대시보드 페이지 구현</div>
-              <div className="font-semibold text-blue-700 pt-1">배포: Vercel</div>
+            <span className="text-[10px] font-mono font-bold text-blue-400 uppercase">FRONTEND</span>
+            <h4 className="font-bold text-white text-sm mt-1">React (Vite)</h4>
+            <div className="text-xs text-slate-400 mt-2 space-y-1 font-sans">
+              <div>• Bloomberg Terminal 스타일 UI</div>
+              <div>• 재무 분석 대시보드 시각화</div>
+              <div className="font-mono text-blue-400 pt-1 text-[11px]">DEPLOY: Vercel Edge</div>
             </div>
           </div>
 
           {/* Backend */}
-          <div className="p-5 rounded-xl border border-emerald-200 bg-emerald-50/40">
-            <div className="w-9 h-9 rounded-lg bg-emerald-600 text-white flex items-center justify-center mb-3">
-              <Server className="w-5 h-5" />
+          <div className="p-5 rounded-xl border border-[#232738] bg-[#141622]">
+            <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center mb-3">
+              <Server className="w-4 h-4" />
             </div>
-            <span className="text-xs font-bold text-emerald-600 uppercase">백엔드</span>
-            <h4 className="font-bold text-slate-900 mt-1">FastAPI</h4>
-            <div className="text-xs text-slate-600 mt-2 space-y-1">
+            <span className="text-[10px] font-mono font-bold text-emerald-400 uppercase">BACKEND</span>
+            <h4 className="font-bold text-white text-sm mt-1">FastAPI</h4>
+            <div className="text-xs text-slate-400 mt-2 space-y-1 font-sans">
               <div>• LLM API (Gemini/OpenAI) 연동</div>
-              <div>• 매출·영업이익률 YoY 자동 계산</div>
-              <div className="font-semibold text-emerald-700 pt-1">배포: Render</div>
+              <div>• 재무 지표 YoY 자동 연산 엔진</div>
+              <div className="font-mono text-emerald-400 pt-1 text-[11px]">DEPLOY: Render Web Service</div>
             </div>
           </div>
 
           {/* Database */}
-          <div className="p-5 rounded-xl border border-indigo-200 bg-indigo-50/40">
-            <div className="w-9 h-9 rounded-lg bg-indigo-600 text-white flex items-center justify-center mb-3">
-              <Database className="w-5 h-5" />
+          <div className="p-5 rounded-xl border border-[#232738] bg-[#141622]">
+            <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center mb-3">
+              <Database className="w-4 h-4" />
             </div>
-            <span className="text-xs font-bold text-indigo-600 uppercase">데이터베이스</span>
-            <h4 className="font-bold text-slate-900 mt-1">PostgreSQL + pgvector</h4>
-            <div className="text-xs text-slate-600 mt-2 space-y-1">
-              <div>• HNSW 코사인 유사도 RAG 검색</div>
-              <div>• DART 공시 MD&A 원문 임베딩</div>
-              <div className="font-semibold text-indigo-700 pt-1">배포: Supabase</div>
+            <span className="text-[10px] font-mono font-bold text-amber-400 uppercase">DATABASE</span>
+            <h4 className="font-bold text-white text-sm mt-1">PostgreSQL (pgvector)</h4>
+            <div className="text-xs text-slate-400 mt-2 space-y-1 font-sans">
+              <div>• HNSW 코사인 유사도 벡터 인덱스</div>
+              <div>• DART MD&A 공시 원문 임베딩</div>
+              <div className="font-mono text-amber-400 pt-1 text-[11px]">DEPLOY: Supabase Cloud</div>
             </div>
           </div>
 
           {/* Source Code */}
-          <div className="p-5 rounded-xl border border-slate-300 bg-slate-50/80">
-            <div className="w-9 h-9 rounded-lg bg-slate-900 text-white flex items-center justify-center mb-3">
-              <GitBranch className="w-5 h-5" />
+          <div className="p-5 rounded-xl border border-[#232738] bg-[#141622]">
+            <div className="w-8 h-8 rounded-lg bg-slate-500/10 border border-slate-500/30 text-slate-300 flex items-center justify-center mb-3">
+              <GitBranch className="w-4 h-4" />
             </div>
-            <span className="text-xs font-bold text-slate-600 uppercase">소스 코드</span>
-            <h4 className="font-bold text-slate-900 mt-1">GitHub 저장소</h4>
-            <div className="text-xs text-slate-600 mt-2 space-y-1">
+            <span className="text-[10px] font-mono font-bold text-slate-400 uppercase">REPOSITORY</span>
+            <h4 className="font-bold text-white text-sm mt-1">GitHub Monorepo</h4>
+            <div className="text-xs text-slate-400 mt-2 space-y-1 font-sans">
               <div>• 풀스택 모노레포 구조</div>
-              <div>• Render & Vercel 자동 빌드 연동</div>
-              <div className="font-semibold text-slate-900 pt-1">저장소: GitHub</div>
+              <div>• CI/CD 자동 빌드 연동</div>
+              <div className="font-mono text-slate-300 pt-1 text-[11px]">REPO: GitHub Public</div>
             </div>
           </div>
         </div>
       </div>
 
       {/* Supabase SQL Viewer */}
-      <div className="bg-slate-900 text-slate-100 rounded-2xl p-6 sm:p-8 shadow-sm">
-        <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-800">
+      <div className="bg-[#10121a] rounded-2xl border border-[#232738] p-6 sm:p-8 shadow-sm">
+        <div className="flex items-center justify-between mb-4 pb-3 border-b border-[#232738]">
           <div>
-            <h4 className="font-bold text-white text-base">Supabase pgvector 스키마 DDL</h4>
-            <p className="text-xs text-slate-400 mt-0.5">
-              Supabase SQL Editor에 복사하여 붙여넣으면 즉시 pgvector 테이블과 인덱스가 생성됩니다.
+            <h4 className="font-bold text-white text-sm font-mono uppercase tracking-wider">
+              SUPABASE PGVECTOR SCHEMA DDL
+            </h4>
+            <p className="text-xs text-slate-400 mt-0.5 font-sans">
+              Supabase SQL Editor에서 실행하여 벡터 테이블 및 HNSW 인덱스를 생성합니다.
             </p>
           </div>
           <button
             onClick={copySql}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-xs font-semibold transition-all border border-slate-700"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-[#181b26] hover:bg-[#232738] text-amber-400 rounded-lg text-xs font-mono font-semibold transition-all border border-[#2d3248]"
           >
             {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-            <span>{copied ? '복사됨!' : 'SQL 복사'}</span>
+            <span>{copied ? 'COPIED!' : 'COPY SQL'}</span>
           </button>
         </div>
 
-        <pre className="text-xs font-mono bg-slate-950 p-4 rounded-xl overflow-x-auto text-emerald-400 border border-slate-800">
+        <pre className="text-xs font-mono bg-[#090a0f] p-4 rounded-xl overflow-x-auto text-amber-400 border border-[#1e2233]">
           <code>{sqlCode}</code>
         </pre>
       </div>

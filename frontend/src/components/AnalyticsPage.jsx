@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BarChart3, TrendingUp, TrendingDown, Layers, PieChart, ArrowUpRight, ArrowDownRight, RefreshCw, Filter } from 'lucide-react';
+import { BarChart3, TrendingUp, TrendingDown, Layers, ArrowUpRight, ArrowDownRight, RefreshCw, Filter } from 'lucide-react';
 
 const formatKRW = (amt) => {
   if (amt === undefined || amt === null) return '-';
@@ -14,7 +14,7 @@ const formatKRW = (amt) => {
 export default function AnalyticsPage() {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedMetric, setSelectedMetric] = useState('operating_profit'); // 'operating_profit' or 'revenue' or 'operating_margin'
+  const [selectedMetric, setSelectedMetric] = useState('operating_profit');
   const [selectedYear, setSelectedYear] = useState(2023);
 
   useEffect(() => {
@@ -32,17 +32,17 @@ export default function AnalyticsPage() {
 
   if (isLoading) {
     return (
-      <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center">
-        <div className="w-8 h-8 border-3 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
-        <p className="text-sm text-slate-500">데이터 분석 대시보드 로딩 중...</p>
+      <div className="bg-[#10121a] rounded-2xl border border-[#232738] p-12 text-center text-slate-100 font-mono">
+        <div className="w-8 h-8 border-2 border-amber-400 border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
+        <p className="text-xs text-slate-400">LOADING MARKET ANALYTICS...</p>
       </div>
     );
   }
 
   if (!data || !data.companies) {
     return (
-      <div className="bg-white rounded-2xl border border-slate-200 p-8 text-center text-slate-500">
-        분석 데이터를 불러올 수 없습니다.
+      <div className="bg-[#10121a] rounded-2xl border border-[#232738] p-8 text-center text-slate-400 font-mono text-xs">
+        NO ANALYTICS DATA AVAILABLE.
       </div>
     );
   }
@@ -70,73 +70,73 @@ export default function AnalyticsPage() {
   const maxValue = Math.max(...yearData.map(d => Math.abs(d.value)), 1);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 text-slate-100">
       {/* Overview Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
-        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
-          <div className="text-xs font-semibold text-slate-500 mb-1">인덱싱 분석 기업 수</div>
-          <div className="text-2xl font-extrabold text-slate-900">{data.total_companies}개사</div>
-          <div className="text-xs text-blue-600 mt-1">국내 대표 시가총액 상위 종목</div>
+      <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 font-mono">
+        <div className="bg-[#10121a] p-5 rounded-2xl border border-[#232738]">
+          <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">COVERAGE UNIVERSE</div>
+          <div className="text-2xl font-extrabold text-white">{data.total_companies} CORPORATIONS</div>
+          <div className="text-xs text-amber-400 mt-1 font-sans">KOSPI 대형 상장사</div>
         </div>
-        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
-          <div className="text-xs font-semibold text-slate-500 mb-1">DART 인덱싱 공시 건수</div>
-          <div className="text-2xl font-extrabold text-blue-600">{data.total_filings_indexed}건</div>
-          <div className="text-xs text-slate-500 mt-1">사업보고서 MD&A 단락 임베딩</div>
+        <div className="bg-[#10121a] p-5 rounded-2xl border border-[#232738]">
+          <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">INDEXED FILINGS</div>
+          <div className="text-2xl font-extrabold text-cyan-400">{data.total_filings_indexed} SECTIONS</div>
+          <div className="text-xs text-slate-400 mt-1 font-sans">사업보고서 MD&A 단락 임베딩</div>
         </div>
-        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
-          <div className="text-xs font-semibold text-slate-500 mb-1">산업 섹터 분류</div>
-          <div className="text-2xl font-extrabold text-slate-900">{data.sectors.length}개 업종</div>
-          <div className="text-xs text-slate-500 mt-1">전기전자, 운수장비, 서비스 등</div>
+        <div className="bg-[#10121a] p-5 rounded-2xl border border-[#232738]">
+          <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">INDUSTRY SECTORS</div>
+          <div className="text-2xl font-extrabold text-white">{data.sectors.length} SECTORS</div>
+          <div className="text-xs text-slate-400 mt-1 font-sans">전기전자, 운수장비, 서비스 등</div>
         </div>
-        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
-          <div className="text-xs font-semibold text-slate-500 mb-1">벡터 인덱스 검색 엔진</div>
-          <div className="text-2xl font-extrabold text-emerald-600">pgvector</div>
-          <div className="text-xs text-emerald-600 mt-1">HNSW 코사인 유사도 연산</div>
+        <div className="bg-[#10121a] p-5 rounded-2xl border border-[#232738]">
+          <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">VECTOR ENGINE</div>
+          <div className="text-2xl font-extrabold text-emerald-400">pgvector</div>
+          <div className="text-xs text-emerald-400 mt-1 font-sans">HNSW Cosine Ops</div>
         </div>
       </div>
 
       {/* Interactive Bar Chart Section */}
-      <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-100">
+      <div className="bg-[#10121a] p-6 sm:p-8 rounded-2xl border border-[#232738] shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-[#232738]">
           <div>
-            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-600 uppercase tracking-wider mb-1">
+            <div className="inline-flex items-center gap-1.5 text-[11px] font-mono font-bold text-amber-400 uppercase tracking-widest mb-1">
               <BarChart3 className="w-4 h-4" />
-              <span>과제 필수 요건: 데이터 분석 페이지 (Analytics Dashboard)</span>
+              <span>CROSS-SECTIONAL PEER COMPARISON (기업별 실적 비교)</span>
             </div>
-            <h3 className="text-lg font-bold text-slate-900">
-              기업별 {selectedYear}년 실적 비교 분석 차트
+            <h3 className="text-base sm:text-lg font-bold text-white font-sans">
+              국내 주요 상장사 FY {selectedYear} 실적 비교 분석 차트
             </h3>
           </div>
 
           {/* Metric & Year Filter Controls */}
-          <div className="flex items-center gap-2 flex-wrap">
-            <div className="flex bg-slate-100 p-1 rounded-xl text-xs font-semibold">
+          <div className="flex items-center gap-2 flex-wrap font-mono text-xs">
+            <div className="flex bg-[#161926] p-1 rounded-xl border border-[#262b3d]">
               <button
                 onClick={() => setSelectedMetric('operating_profit')}
-                className={`px-3 py-1.5 rounded-lg transition-all ${
+                className={`px-3 py-1.5 rounded-lg transition-all font-semibold ${
                   selectedMetric === 'operating_profit'
-                    ? 'bg-white text-blue-600 shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900'
+                    ? 'bg-amber-500 text-black font-bold'
+                    : 'text-slate-400 hover:text-white'
                 }`}
               >
                 영업이익
               </button>
               <button
                 onClick={() => setSelectedMetric('revenue')}
-                className={`px-3 py-1.5 rounded-lg transition-all ${
+                className={`px-3 py-1.5 rounded-lg transition-all font-semibold ${
                   selectedMetric === 'revenue'
-                    ? 'bg-white text-blue-600 shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900'
+                    ? 'bg-amber-500 text-black font-bold'
+                    : 'text-slate-400 hover:text-white'
                 }`}
               >
                 매출액
               </button>
               <button
                 onClick={() => setSelectedMetric('operating_margin')}
-                className={`px-3 py-1.5 rounded-lg transition-all ${
+                className={`px-3 py-1.5 rounded-lg transition-all font-semibold ${
                   selectedMetric === 'operating_margin'
-                    ? 'bg-white text-blue-600 shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900'
+                    ? 'bg-amber-500 text-black font-bold'
+                    : 'text-slate-400 hover:text-white'
                 }`}
               >
                 영업이익률 (%)
@@ -146,11 +146,11 @@ export default function AnalyticsPage() {
             <select
               value={selectedYear}
               onChange={(e) => setSelectedYear(Number(e.target.value))}
-              className="bg-slate-100 border-none text-xs font-bold px-3 py-1.5 rounded-xl cursor-pointer focus:ring-2 focus:ring-blue-500"
+              className="bg-[#161926] border border-[#262b3d] text-white text-xs font-mono font-bold px-3 py-1.5 rounded-xl cursor-pointer focus:ring-1 focus:ring-amber-400"
             >
-              <option value={2024}>2024년</option>
-              <option value={2023}>2023년</option>
-              <option value={2022}>2022년</option>
+              <option value={2024}>FY 2024</option>
+              <option value={2023}>FY 2023</option>
+              <option value={2022}>FY 2022</option>
             </select>
           </div>
         </div>
@@ -163,38 +163,38 @@ export default function AnalyticsPage() {
 
             return (
               <div key={idx} className="space-y-1.5">
-                <div className="flex items-center justify-between text-xs font-medium text-slate-700">
+                <div className="flex items-center justify-between text-xs font-mono text-slate-300">
                   <div className="flex items-center gap-2">
-                    <span className="w-5 text-slate-400 font-mono">{idx + 1}</span>
-                    <span className="font-bold text-slate-900 text-sm">{item.name}</span>
-                    <span className="text-slate-400 text-xs font-mono">({item.stockCode})</span>
-                    <span className="text-xs px-2 py-0.5 rounded-md bg-slate-100 text-slate-600">{item.sector}</span>
+                    <span className="w-5 text-slate-500">{idx + 1}</span>
+                    <span className="font-bold text-white text-sm font-sans">{item.name}</span>
+                    <span className="text-slate-500 text-xs font-mono">({item.stockCode}.KS)</span>
+                    <span className="text-[10px] px-2 py-0.5 rounded bg-[#1c202e] text-slate-300 font-sans border border-[#2b3147]">{item.sector}</span>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <span className={`font-mono text-xs ${item.diff >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
+                  <div className="flex items-center gap-4">
+                    <span className={`text-xs ${item.diff >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
                       YoY {item.diff >= 0 ? `+${item.diff.toFixed(1)}%` : `${item.diff.toFixed(1)}%`}
                     </span>
-                    <span className={`font-extrabold text-sm ${isNegative ? 'text-rose-600' : 'text-slate-900'}`}>
+                    <span className={`font-extrabold text-sm ${isNegative ? 'text-rose-400' : 'text-white'}`}>
                       {selectedMetric === 'operating_margin' ? `${item.value.toFixed(2)}%` : formatKRW(item.value)}
                     </span>
                   </div>
                 </div>
 
                 {/* Bar */}
-                <div className="w-full bg-slate-100 h-6 rounded-lg overflow-hidden flex items-center p-0.5">
+                <div className="w-full bg-[#161926] h-6 rounded-lg overflow-hidden flex items-center p-0.5 border border-[#232738]">
                   <div
                     style={{ width: `${widthPct}%` }}
-                    className={`h-full rounded-md transition-all duration-500 flex items-center px-2 text-[10px] font-bold text-white ${
+                    className={`h-full rounded-md transition-all duration-500 flex items-center px-2 text-[10px] font-mono font-bold text-white ${
                       isNegative
-                        ? 'bg-rose-500'
+                        ? 'bg-rose-600'
                         : selectedMetric === 'revenue'
                         ? 'bg-blue-600'
                         : selectedMetric === 'operating_profit'
-                        ? 'bg-indigo-600'
+                        ? 'bg-amber-500 text-black'
                         : 'bg-emerald-600'
                     }`}
                   >
-                    {widthPct > 20 && (selectedMetric === 'operating_margin' ? `${item.value.toFixed(1)}%` : formatKRW(item.value))}
+                    {widthPct > 25 && (selectedMetric === 'operating_margin' ? `${item.value.toFixed(1)}%` : formatKRW(item.value))}
                   </div>
                 </div>
               </div>
@@ -204,46 +204,45 @@ export default function AnalyticsPage() {
       </div>
 
       {/* Comprehensive Financial Comparison Table */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm overflow-hidden">
-        <h4 className="font-bold text-base text-slate-900 mb-4 flex items-center gap-2">
-          <span>기업별 {selectedYear}년 실적 상세 데이터 테이블</span>
-          <span className="text-xs font-normal text-slate-500">(DART 연결재무제표 기준)</span>
+      <div className="bg-[#10121a] rounded-2xl border border-[#232738] p-6 sm:p-8 shadow-sm overflow-hidden font-mono text-xs">
+        <h4 className="font-bold text-sm text-white mb-4 flex items-center gap-2 uppercase tracking-wider font-mono">
+          <span>FINANCIAL STATEMENT SUMMARY TABLE (FY {selectedYear})</span>
         </h4>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm">
+          <table className="w-full text-left text-xs">
             <thead>
-              <tr className="border-b border-slate-200 text-xs font-semibold text-slate-500 uppercase">
-                <th className="py-3 px-3">기업명</th>
-                <th className="py-3 px-3">업종</th>
-                <th className="py-3 px-3 text-right">매출액</th>
-                <th className="py-3 px-3 text-right">영업이익</th>
-                <th className="py-3 px-3 text-right">영업이익률 (OPM)</th>
-                <th className="py-3 px-3 text-center">상태</th>
+              <tr className="border-b border-[#232738] text-[11px] font-bold text-slate-400 uppercase">
+                <th className="py-3 px-3">TICKER / CORP</th>
+                <th className="py-3 px-3">SECTOR</th>
+                <th className="py-3 px-3 text-right">REVENUE</th>
+                <th className="py-3 px-3 text-right">OPERATING PROFIT</th>
+                <th className="py-3 px-3 text-right">OP MARGIN (OPM)</th>
+                <th className="py-3 px-3 text-center">STATUS</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-[#1e2233]">
               {yearData.map((row, idx) => (
-                <tr key={idx} className="hover:bg-slate-50/70 transition-colors">
-                  <td className="py-3.5 px-3 font-semibold text-slate-900 flex items-center gap-2">
+                <tr key={idx} className="hover:bg-[#161a26] transition-colors">
+                  <td className="py-3.5 px-3 font-semibold text-white flex items-center gap-2 font-sans">
                     <span>{row.name}</span>
-                    <span className="text-xs text-slate-400 font-mono">({row.stockCode})</span>
+                    <span className="text-[11px] text-slate-500 font-mono">({row.stockCode}.KS)</span>
                   </td>
-                  <td className="py-3.5 px-3 text-xs text-slate-600">{row.sector}</td>
-                  <td className="py-3.5 px-3 text-right font-medium text-slate-900">{formatKRW(row.rev)}</td>
-                  <td className={`py-3.5 px-3 text-right font-bold ${row.op < 0 ? 'text-rose-600' : 'text-slate-900'}`}>
+                  <td className="py-3.5 px-3 text-slate-400 font-sans">{row.sector}</td>
+                  <td className="py-3.5 px-3 text-right font-medium text-slate-200">{formatKRW(row.rev)}</td>
+                  <td className={`py-3.5 px-3 text-right font-bold ${row.op < 0 ? 'text-rose-400' : 'text-white'}`}>
                     {formatKRW(row.op)}
                   </td>
-                  <td className={`py-3.5 px-3 text-right font-bold ${row.margin < 0 ? 'text-rose-600' : 'text-emerald-700'}`}>
+                  <td className={`py-3.5 px-3 text-right font-bold ${row.margin < 0 ? 'text-rose-400' : 'text-emerald-400'}`}>
                     {row.margin.toFixed(2)}%
                   </td>
                   <td className="py-3.5 px-3 text-center">
                     {row.op < 0 ? (
-                      <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-rose-100 text-rose-700">적자</span>
+                      <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-500/10 text-rose-400 border border-rose-500/30">DEFICIT</span>
                     ) : row.margin > 15 ? (
-                      <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700">초고수익</span>
+                      <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">HIGH MARGIN</span>
                     ) : (
-                      <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-700">정상</span>
+                      <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-500/10 text-blue-400 border border-blue-500/30">NORMAL</span>
                     )}
                   </td>
                 </tr>
