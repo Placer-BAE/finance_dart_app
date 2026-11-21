@@ -7,9 +7,10 @@ import AiBriefing from './components/AiBriefing';
 import SourceCitation from './components/SourceCitation';
 import AnalyticsPage from './components/AnalyticsPage';
 import ArchitectureView from './components/ArchitectureView';
+import IdeaPitchPage from './components/IdeaPitchPage';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState('briefing');
+  const [activeTab, setActiveTab] = useState('pitch'); // 5주차 발표 대응 기본값 pitch (또는 briefing)
   const [companies, setCompanies] = useState([]);
   const [demoCases, setDemoCases] = useState([]);
   const [selectedCorpCode, setSelectedCorpCode] = useState('00126380'); // 삼성전자
@@ -95,6 +96,10 @@ export default function App() {
       <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {activeTab === 'pitch' && (
+          <IdeaPitchPage onGoToPrototype={() => setActiveTab('briefing')} />
+        )}
+
         {activeTab === 'briefing' && (
           <>
             {/* Top Demo Case Presets (Required for RAG Live Demo) */}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { TrendingUp, BarChart3, Database, FileText, CheckCircle2 } from 'lucide-react';
+import { TrendingUp, BarChart3, Database, FileText, CheckCircle2, Lightbulb } from 'lucide-react';
 
 export default function Navbar({ activeTab, setActiveTab }) {
   return (
@@ -23,19 +23,30 @@ export default function Navbar({ activeTab, setActiveTab }) {
           {/* Navigation Tabs */}
           <nav className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl">
             <button
+              onClick={() => setActiveTab('pitch')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-medium rounded-lg transition-all ${
+                activeTab === 'pitch'
+                  ? 'bg-blue-600 text-white shadow-sm font-semibold'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <Lightbulb className="w-4 h-4" />
+              <span>[5주차] 아이디어 기획서</span>
+            </button>
+            <button
               onClick={() => setActiveTab('briefing')}
-              className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-medium rounded-lg transition-all ${
                 activeTab === 'briefing'
                   ? 'bg-white text-blue-600 shadow-sm font-semibold'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               <FileText className="w-4 h-4" />
-              <span>실적 브리핑 & RAG 시연</span>
+              <span>UI 프로토타입 & RAG</span>
             </button>
             <button
               onClick={() => setActiveTab('analytics')}
-              className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-medium rounded-lg transition-all ${
                 activeTab === 'analytics'
                   ? 'bg-white text-blue-600 shadow-sm font-semibold'
                   : 'text-slate-600 hover:text-slate-900'
@@ -46,7 +57,7 @@ export default function Navbar({ activeTab, setActiveTab }) {
             </button>
             <button
               onClick={() => setActiveTab('architecture')}
-              className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-medium rounded-lg transition-all ${
                 activeTab === 'architecture'
                   ? 'bg-white text-blue-600 shadow-sm font-semibold'
                   : 'text-slate-600 hover:text-slate-900'
