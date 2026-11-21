@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BarChart3, TrendingUp, TrendingDown, Layers, ArrowUpRight, ArrowDownRight, RefreshCw, Filter } from 'lucide-react';
+import { getClientAnalytics } from '../services/dartService';
 
 const formatKRW = (amt) => {
   if (amt === undefined || amt === null) return '-';
@@ -12,32 +13,22 @@ const formatKRW = (amt) => {
 };
 
 export default function AnalyticsPage() {
-  const [data, setData] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [data, setData] = useState(() => getClientAnalytics());
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedMetric, setSelectedMetric] = useState('operating_profit');
   const [selectedYear, setSelectedYear] = useState(2023);
 
   useEffect(() => {
+    // Attempt to load server data if available, fallback stays active seamlessly
     fetch('/api/analytics')
       .then(res => res.json())
       .then(d => {
-        setData(d);
-        setIsLoading(false);
+        if (d && d.companies) setData(d);
       })
       .catch(err => {
-        console.error("Analytics fetch error:", err);
-        setIsLoading(false);
+        // Fallback remains active
       });
   }, []);
-
-  if (isLoading) {
-    return (
-      <div className="bg-[#10121a] rounded-2xl border border-[#232738] p-12 text-center text-slate-100 font-mono">
-        <div className="w-8 h-8 border-2 border-amber-400 border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
-        <p className="text-xs text-slate-400">LOADING MARKET ANALYTICS...</p>
-      </div>
-    );
-  }
 
   if (!data || !data.companies) {
     return (
