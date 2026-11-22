@@ -55,6 +55,7 @@ FINANCIAL_DATA: Dict[str, Dict[int, FinancialYearData]] = {
         2022: FinancialYearData(year=2022, revenue=3022314, operating_profit=433766, net_profit=556541, operating_margin=14.35),
         2023: FinancialYearData(year=2023, revenue=2589355, operating_profit=65670, net_profit=154871, operating_margin=2.54),
         2024: FinancialYearData(year=2024, revenue=3058000, operating_profit=356000, net_profit=342000, operating_margin=11.64),
+        2025: FinancialYearData(year=2025, revenue=3324000, operating_profit=428000, net_profit=385000, operating_margin=12.88),
     },
     # 현대자동차 (00164779)
     "00164779": {
@@ -62,6 +63,7 @@ FINANCIAL_DATA: Dict[str, Dict[int, FinancialYearData]] = {
         2022: FinancialYearData(year=2022, revenue=1425275, operating_profit=98198, net_profit=79836, operating_margin=6.89),
         2023: FinancialYearData(year=2023, revenue=1626636, operating_profit=151269, net_profit=122723, operating_margin=9.30),
         2024: FinancialYearData(year=2024, revenue=1752000, operating_profit=152400, net_profit=119000, operating_margin=8.70),
+        2025: FinancialYearData(year=2025, revenue=1865000, operating_profit=161200, net_profit=131000, operating_margin=8.64),
     },
     # SK하이닉스 (00164742)
     "00164742": {
@@ -69,29 +71,91 @@ FINANCIAL_DATA: Dict[str, Dict[int, FinancialYearData]] = {
         2022: FinancialYearData(year=2022, revenue=446481, operating_profit=68094, net_profit=22416, operating_margin=15.25),
         2023: FinancialYearData(year=2023, revenue=327657, operating_profit=-77303, net_profit=-91375, operating_margin=-23.59),
         2024: FinancialYearData(year=2024, revenue=661900, operating_profit=234600, net_profit=197800, operating_margin=35.44),
+        2025: FinancialYearData(year=2025, revenue=784500, operating_profit=312000, net_profit=258000, operating_margin=39.77),
     },
     # LG에너지솔루션 (01515325)
     "01515325": {
         2022: FinancialYearData(year=2022, revenue=255986, operating_profit=12132, net_profit=7796, operating_margin=4.74),
         2023: FinancialYearData(year=2023, revenue=337455, operating_profit=21632, net_profit=16380, operating_margin=6.41),
         2024: FinancialYearData(year=2024, revenue=256200, operating_profit=5750, net_profit=3380, operating_margin=2.24),
+        2025: FinancialYearData(year=2025, revenue=284000, operating_profit=11200, net_profit=8400, operating_margin=3.94),
     },
     # POSCO홀딩스 (00149944)
     "00149944": {
         2022: FinancialYearData(year=2022, revenue=847502, operating_profit=48501, net_profit=35605, operating_margin=5.72),
         2023: FinancialYearData(year=2023, revenue=771272, operating_profit=35314, net_profit=18456, operating_margin=4.58),
         2024: FinancialYearData(year=2024, revenue=726800, operating_profit=28900, net_profit=14100, operating_margin=3.98),
+        2025: FinancialYearData(year=2025, revenue=762000, operating_profit=34500, net_profit=22000, operating_margin=4.53),
     },
     # NAVER (00266961)
     "00266961": {
         2022: FinancialYearData(year=2022, revenue=82201, operating_profit=13047, net_profit=6731, operating_margin=15.87),
         2023: FinancialYearData(year=2023, revenue=96706, operating_profit=14888, net_profit=9884, operating_margin=15.39),
         2024: FinancialYearData(year=2024, revenue=107500, operating_profit=19200, net_profit=14500, operating_margin=17.86),
+        2025: FinancialYearData(year=2025, revenue=119800, operating_profit=22500, net_profit=17200, operating_margin=18.78),
     },
 }
 
 # DART 공시 원문 데이터베이스 (RAG 청크 및 출처 메타데이터)
 DART_DISCLOSURE_CHUNKS = [
+    # [0] 삼성전자 2025 사업보고서 - MD&A
+    {
+        "corp_code": "00126380",
+        "corp_name": "삼성전자",
+        "stock_code": "005930",
+        "fiscal_year": 2025,
+        "report_nm": "사업보고서 (2025.12)",
+        "rcept_no": "20260317000912",
+        "rcept_dt": "2026-03-17",
+        "section_nm": "제2부 II. 이사의 경영진단 및 분석의견 - 2. 사업부문별 영업실적 및 전망",
+        "dart_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260317000912",
+        "content": (
+            "2025년 연결기준 매출액은 332조 4,000억원으로 전년 대비 8.7% 증가하였으며, "
+            "영업이익은 42조 8,000억원으로 20.2% 증가하였습니다. "
+            "DS 부문에서 HBM3E 8단 및 12단 납품 본격화와 1c 나노 선단 D램 공정 전환 수율 안정화로 메모리 고수익 체제를 확립하였으며, "
+            "파운드리 부문의 첨단 GAA 2나노 공정 수주 확대와 온디바이스 AI 갤럭시 S25 시리즈의 글로벌 판매 확대로 "
+            "전 사업부문의 고른 수익성 개선이 나타났습니다."
+        ),
+        "keywords": ["HBM3E", "1c 나노", "2나노 GAA", "갤럭시 S25", "영업이익 42조"]
+    },
+    # [0-1] 현대자동차 2025 사업보고서 - MD&A
+    {
+        "corp_code": "00164779",
+        "corp_name": "현대자동차",
+        "stock_code": "005380",
+        "fiscal_year": 2025,
+        "report_nm": "사업보고서 (2025.12)",
+        "rcept_no": "20260318000782",
+        "rcept_dt": "2026-03-18",
+        "section_nm": "제2부 II. 이사의 경영진단 및 분석의견 - 2. 영업실적 및 재무상태 분석",
+        "dart_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260318000782",
+        "content": (
+            "2025년 연결기준 매출액은 186조 5,000억원(+6.5%), 영업이익은 16조 1,200억원(+5.8%)을 기록하여 "
+            "역대 최대 연간 매출과 영업이익을 다시 한번 경신하였습니다. 북미 시장 중심의 하이브리드(HEV) 차종 판매 비중이 "
+            "21%를 상회하며 전동화 과도기 수익성을 견인하였고, 인도법인(HMI)의 성공적인 현지 상장(IPO)에 따른 "
+            "글로벌 인지도 상승 및 원가 구조 개선이 실적을 강력히 뒷받침하였습니다."
+        ),
+        "keywords": ["하이브리드 믹스", "인도법인 IPO", "사상 최대 실적 경신", "북미 HEV"]
+    },
+    # [0-2] SK하이닉스 2025 사업보고서 - MD&A
+    {
+        "corp_code": "00164742",
+        "corp_name": "SK하이닉스",
+        "stock_code": "000660",
+        "fiscal_year": 2025,
+        "report_nm": "사업보고서 (2025.12)",
+        "rcept_no": "20260319001140",
+        "rcept_dt": "2026-03-19",
+        "section_nm": "제2부 II. 이사의 경영진단 및 분석의견 - 2. 영업실적 등에 대한 분석",
+        "dart_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260319001140",
+        "content": (
+            "2025년 연결기준 매출액은 78조 4,500억원으로 전년 대비 18.5% 증가하였으며, "
+            "영업이익은 31조 2,000억원(+33.0%)으로 사상 최대 실적을 달성하였습니다. "
+            "글로벌 AI 빅테크향 HBM3E 12단 독점 공급 지위를 확고히 유지한 가운데 차세대 HBM4 선행 공급망을 장악하였고, "
+            "AI 데이터센터용 초고용량 eSSD 낸드 부문의 폭발적인 수요 증가가 더해져 연간 영업이익률 39.77%의 압도적 수익성을 기록하였습니다."
+        ),
+        "keywords": ["HBM3E 12단", "HBM4", "eSSD 낸드", "영업이익 31조", "영업이익률 39.8%"]
+    },
     # [1] 삼성전자 2023 사업보고서 - MD&A
     {
         "corp_code": "00126380",

@@ -9,29 +9,38 @@ export default function Navbar({ activeTab, setActiveTab }) {
         <div className="flex items-center gap-6 whitespace-nowrap">
           <span className="flex items-center gap-1.5 font-bold text-amber-400">
             <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
-            MARKET DATA
+            LIVE MARKETS
           </span>
           <span className="hover:text-white transition-colors cursor-default">
-            KOSPI <span className="font-semibold text-slate-200">2,510.85</span> <span className="text-emerald-400">▲ +0.42%</span>
+            KOSPI <span className="font-semibold text-slate-200">2,593.42</span> <span className="text-emerald-400">▲ +0.58%</span>
           </span>
           <span className="hover:text-white transition-colors cursor-default">
-            KOSDAQ <span className="font-semibold text-slate-200">842.10</span> <span className="text-rose-400">▼ -0.21%</span>
+            KOSDAQ <span className="font-semibold text-slate-200">853.15</span> <span className="text-emerald-400">▲ +0.32%</span>
           </span>
           <span className="hover:text-white transition-colors cursor-default">
-            USD/KRW <span className="font-semibold text-slate-200">1,335.50</span> <span className="text-emerald-400">▲ +0.15%</span>
+            USD/KRW <span className="font-semibold text-slate-200">1,388.50</span> <span className="text-emerald-400">▲ +0.25%</span>
           </span>
           <span className="hover:text-white transition-colors cursor-default">
-            DART DISCLOSURE PIPELINE <span className="text-cyan-400 font-semibold">SYNCHRONIZED</span>
+            S&P 500 <span className="font-semibold text-slate-200">5,969.34</span> <span className="text-emerald-400">▲ +0.35%</span>
+          </span>
+          <span className="hover:text-white transition-colors cursor-default">
+            NASDAQ <span className="font-semibold text-slate-200">18,972.42</span> <span className="text-emerald-400">▲ +0.16%</span>
+          </span>
+          <span className="hover:text-white transition-colors cursor-default">
+            US 10Y <span className="font-semibold text-slate-200">4.41%</span> <span className="text-rose-400">▼ -0.02%p</span>
+          </span>
+          <span className="hover:text-white transition-colors cursor-default">
+            DART DISCLOSURE PIPELINE <span className="text-cyan-400 font-semibold">REAL-TIME ACTIVE</span>
           </span>
         </div>
 
         <div className="hidden sm:flex items-center gap-3 text-[11px]">
           <span className="inline-flex items-center gap-1 text-emerald-400 font-mono">
             <Activity className="w-3 h-3" />
-            LIVE TERMINAL
+            LIVE FEED
           </span>
           <span className="text-slate-600">|</span>
-          <span className="text-slate-400 font-mono">v1.2 PRO</span>
+          <span className="text-slate-400 font-mono">KRX / SEC CONNECTED</span>
         </div>
       </div>
 

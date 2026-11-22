@@ -13,7 +13,7 @@ export default function CompanySelector({
   isLoading
 }) {
   const currentCompany = companies.find(c => c.corp_code === selectedCorpCode) || companies[0];
-  const years = [2024, 2023, 2022];
+  const years = [2025, 2024, 2023, 2022];
 
   return (
     <div className="bg-[#10121a] rounded-2xl border border-[#232738] p-6 shadow-sm mb-8 text-slate-100">

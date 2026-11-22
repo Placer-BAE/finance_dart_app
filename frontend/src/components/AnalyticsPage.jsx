@@ -16,7 +16,7 @@ export default function AnalyticsPage() {
   const [data, setData] = useState(() => getClientAnalytics());
   const [isLoading, setIsLoading] = useState(false);
   const [selectedMetric, setSelectedMetric] = useState('operating_profit');
-  const [selectedYear, setSelectedYear] = useState(2023);
+  const [selectedYear, setSelectedYear] = useState(2025);
 
   useEffect(() => {
     // Attempt to load server data if available, fallback stays active seamlessly
@@ -139,6 +139,7 @@ export default function AnalyticsPage() {
               onChange={(e) => setSelectedYear(Number(e.target.value))}
               className="bg-[#161926] border border-[#262b3d] text-white text-xs font-mono font-bold px-3 py-1.5 rounded-xl cursor-pointer focus:ring-1 focus:ring-amber-400"
             >
+              <option value={2025}>FY 2025</option>
               <option value={2024}>FY 2024</option>
               <option value={2023}>FY 2023</option>
               <option value={2022}>FY 2022</option>
