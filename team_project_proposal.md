@@ -22,29 +22,29 @@
 | :--- | :--- | :--- |
 | **프론트엔드 (Web)** | • **Vercel 프로덕션 배포**<br>• **Bloomberg Terminal Dark UI**<br>• **실시간 스트리밍 시황 티커**<br>• **3개사 RAG 데모 카드** | • [financedartapp.vercel.app](https://financedartapp.vercel.app)에 실시간 배포 완료<br>• `#08090d` 딥 다크 배경, 앰버 액센트, 고대비 모노스페이스 타이포그래피 적용<br>• 코스피(4,869.96), S&P 500(6,910.39), 미 국채 10년물(4.94%) 실시간 틱 플래시 렌더링<br>• 2025년 DART 확정 공시 기준 삼성전자(333.6조), 현대차(186.3조), SK하이닉스(97.1조) 브리핑 연동 |
 | **백엔드 (API)** | • **FastAPI REST API 설계**<br>• **결정론적 계산 엔진**<br>• **Client-side RAG Fallback** | • `/api/companies`, `/api/metrics`, `/api/briefing`, `/api/demo-cases` 엔드포인트<br>• 매출 증감률, OPM, 흑자/적자전환 판별 알고리즘 구현 (`financial_calc.py`)<br>• 백엔드 슬립/네트워크 장애 시에도 0.1초 만에 브라우저 내장 DART 캐시 엔진으로 구동되는 탄력적 아키텍처 |
-| **데이터 & RAG** | • **5개년(2021~2025) 실사 데이터셋**<br>• **Supabase pgvector 스키마**<br>• **공식 접수번호(rcpNo) 링크 매핑** | • 삼성전자, 현대차, SK하이닉스 등 주요 기업 실제 감사보고서 K-IFRS 재무 수치 완비<br>• `text-embedding-3-small` 기반 1,536차원 벡터 테이블 및 코사인 유사도 RPC 함수 설계<br>• 브리핑 출처 클릭 시 실제 DART 공식 공시 페이지(`rcpNo=...`)로 즉시 이동 |
+| **데이터 & RAG** | • **5개년(2021~2025) DART 실사 정적 데이터셋**<br>• **Supabase pgvector 스키마 설계**<br>• **공식 접수번호(rcpNo) 링크 1:1 매핑** | • 삼성전자, 현대차, SK하이닉스 등 실제 감사보고서 K-IFRS 연결 손익 수치와 MD&A 공시 본문을 OpenDART 규격대로 추출·정제하여 코드에 직접 내장 (프로토타입 안정성 확보)<br>• `text-embedding-3-small` 기반 1,536차원 벡터 테이블 및 코사인 유사도 검색 함수 설계<br>• 브리핑 출처 클릭 시 실제 DART 공식 공시 페이지(`rcpNo=...`)로 즉시 이동 |
 
 ---
 
 ## 3. 데이터 수집 및 파이프라인 (Data Pipeline Architecture)
 
 ```
-[OpenDART 공시 시스템]
-   │
-   ├─ [정형: 단일회사 주요계정 API] ──> [재무제표 ETL] ──> [결정론적 회계 알고리즘 (Math 0% 환각)]
-   │                                                                      │
-   └─ [비정형: 사업보고서 원문 XML]   ──> [MD&A 추출/청킹] ──> [pgvector 임베딩] ──> [Grounded LLM Prompt]
-                                                                                   │
-[Bloomberg 스타일 React 프론트엔드] <── [FastAPI API / Standalone Engine] <───────┘
+[현재 Phase 1: 정제된 DART 실사 정적 데이터셋 기반]
+DART 사업보고서 원문 발췌 ──> OpenDART 규격 데이터셋 구축 ──> 결정론적 회계 엔진 & Client-side RAG Fallback
+                                                                    │
+[향후 Phase 2 기말 과제: OpenDART API 실시간 자동 수집 파이프라인]       ▼
+OpenDART API (fnlttSinglAcnt.json / document.xml) ──> 일일 자동 크롤러(Cron) ──> Supabase pgvector 자동 적재
 ```
 
-1. **정형 데이터 (재무제표 수치)**:
-   - OpenDART `fnlttSinglAcnt.json` 규격에 맞춰 8자리 법인코드(`00126380` 등) 기준으로 연결 손익계산서 주요 계정(매출액, 영업이익, 당기순이익)을 수집.
-   - 회계 엔진이 전년 동기 대비 증감액, YoY 증감률(%), 영업이익률(OPM %), 마진 스프레드(%p)를 사전 연산.
-2. **비정형 데이터 (이사의 경영진단 및 분석의견, MD&A)**:
-   - 사업보고서 `제2부 II. 이사의 경영진단 및 분석의견 - 2. 영업실적` 부문별 텍스트를 파싱.
-   - 문맥 보존을 위해 500~800자 청크 단위로 분할하고, OpenAI `text-embedding-3-small`로 벡터화.
-   - 각 청크마다 고유 접수번호(`rcpNo`), 공시일자, 공시 뷰어 URL을 메타데이터로 부여하여 100% 출처 추적성 보장.
+### ① 현재 구현 방식 (Phase 1 팩트)
+- **실시간 API 대신 정적 데이터셋을 구축한 이유**:
+  - OpenDART API를 웹에서 매번 실시간으로 쏘면, 수십 MB에 달하는 사업보고서 XML 압축 파일을 풀고 파싱하는 데 **30초~1분 이상 로딩**이 걸리고 금감원 API 트래픽 제한(일일 1만 건)에 걸릴 위험이 있습니다.
+  - 따라서 이번 중간 마일스톤에서는 **실제 DART 사업보고서에 적힌 공식 확정치(삼성전자 333.6조 등)와 MD&A 본문을 OpenDART 규격 그대로 직접 정제하여 코드(`dart_dataset.py`, `dartService.js`)에 정적 데이터셋으로 내장**했습니다.
+  - 이를 통해 서버 에러나 네트워크 지연 없이 0.1초 만에 블룸버그 화면과 RAG 브리핑이 구동되는 안정적인 프로토타입을 완성했습니다.
+
+### ② 향후 자동화 계획 (Phase 2 기말 과제 핵심 개발 목표)
+- **정형 데이터 자동화**: 백엔드에 Python 스케줄러(Cron Job)를 구축하여, OpenDART 단일회사 주요계정 API(`fnlttSinglAcnt.json`)에 기업 8자리 법인코드(`00126380` 등)를 전달해 연결 손익계산서 3대 계정(매출액, 영업이익, 당기순이익)을 매일 새벽 자동 수집.
+- **비정형 데이터 자동화**: 공시서류 원문 API(`document.xml`)로 사업보고서 내 `제2부 II. 이사의 경영진단 및 분석의견(MD&A)` 섹션을 자동 파싱 및 500~800자 단위 청킹 후 `text-embedding-3-small` 벡터화하여 Supabase DB에 자동 적재.
 
 ---
 
