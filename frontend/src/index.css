@@ -4,22 +4,138 @@
 
 @layer base {
   body {
-    @apply bg-slate-50 text-slate-900 font-sans;
+    font-family: 'IBM Plex Sans KR', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    background-color: #F6F7F9;
+    color: #10161E;
+    margin: 0;
   }
 }
 
-/* Custom scrollbars */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+a {
+  color: #0B7A70;
+  text-decoration: none;
 }
-::-webkit-scrollbar-track {
-  background: #f1f5f9;
+a:hover {
+  color: #075F57;
 }
-::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 9999px;
+
+.navlink {
+  color: #4A5563;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 10px 12px;
+  border-radius: 10px;
+  transition: all 0.15s ease;
 }
-::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+.navlink:hover {
+  background: #EEF1F4;
+  color: #10161E;
+}
+
+.fy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  background: #10161E;
+  color: #FFFFFF !important;
+  transition: background 0.15s ease;
+}
+.fy:hover {
+  background: #26303C;
+}
+
+.card {
+  transition: box-shadow .2s, transform .2s;
+}
+.card:hover {
+  box-shadow: 0 12px 32px rgba(16,22,30,.10);
+  transform: translateY(-2px);
+}
+
+.tile {
+  transition: transform .2s, box-shadow .25s;
+}
+.tile:hover {
+  transform: translateY(-2px);
+}
+
+.tab {
+  color: #B9C8D6;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: 999px;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+.tab:hover {
+  background: rgba(255,255,255,.08);
+  color: #FFFFFF !important;
+}
+
+.btn {
+  cursor: pointer;
+}
+.btn:focus-visible, input:focus {
+  outline: 2px solid #34E0C8;
+  outline-offset: 2px;
+}
+
+.reason {
+  transition: border-color .15s, background .15s;
+}
+.reason:hover {
+  border-color: #9ED9D0 !important;
+}
+
+.chip {
+  transition: background .15s ease;
+}
+.chip:hover {
+  background: #E1E6EB !important;
+}
+
+.ins {
+  transition: border-color .15s ease;
+}
+.ins:hover {
+  border-color: #9ED9D0 !important;
+}
+
+.row:hover {
+  background: #F6F7F9;
+}
+
+.go {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 10px;
+  background: #10161E;
+  color: #FFFFFF !important;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background .15s ease;
+}
+.go:hover {
+  background: #26303C;
+}
+
+.disc:hover {
+  background: #F1F4F7;
+}
+
+section[id] {
+  scroll-margin-top: 24px;
 }
