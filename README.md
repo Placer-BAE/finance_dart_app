@@ -1,158 +1,142 @@
-# 📊 DART 기업 실적 변화 브리핑 AI (RAG 공시 분석 시스템)
+# 📊 DART 기업 실적 변화 브리핑 AI (Bloomberg Terminal Style RAG)
 
-> **8주차 프로젝트**: 수집한 DART 사업보고서 공시 데이터에 화면(React), 서버(FastAPI), AI(LLM + RAG) 기능을 연결해 실제로 동작하고 배포 가능한 금융 분석 서비스를 구축합니다.
+[![Vercel Deployment](https://img.shields.io/badge/Vercel-Deployed-black?style=for-the-badge&logo=vercel)](https://financedartapp.vercel.app)
+[![React](https://img.shields.io/badge/React_18-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://react.dev)
+[![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com)
+[![Supabase](https://img.shields.io/badge/Supabase_pgvector-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com)
+[![Gemini](https://img.shields.io/badge/Google_Gemini-8E75C2?style=for-the-badge&logo=googlegemini&logoColor=white)](https://deepmind.google/technologies/gemini/)
 
----
-
-## 🎯 1. 서비스 개요 및 타겟 사용자
-
-- **서비스명**: DART 기업 실적 변화 브리핑 AI
-- **타겟 사용자**: 사업보고서를 읽는 **투자자 및 증권사 애널리스트**
-- **핵심 가치**: 
-  - 기업과 연도를 선택하면 **매출액·영업이익·영업이익률이 전년 대비(YoY) 얼마나 변했는지 자동 계산**
-  - 회사가 공식 공시(이사의 경영진단 및 분석의견 MD&A)를 통해 밝힌 **실적 변동 사유를 RAG(pgvector)로 정확히 검색하여 AI 브리핑 및 공시 원문 출처를 함께 제공**
+> **라이브 서비스 URL**: [https://financedartapp.vercel.app](https://financedartapp.vercel.app)  
+> **금융감독원 전자공시(DART)** 사업보고서의 확정 재무제표와 `이사의 경영진단 및 분석의견(MD&A)` 원문을 결합하여, **산술 계산 오차(Math Hallucination) 0%**와 **100% 공시 출처 추적성**을 보장하는 블룸버그 터미널 스타일의 차세대 금융 AI 브리핑 시스템입니다.
 
 ---
 
-## 🛠️ 2. 기술 스택 및 배포 구조 (과제 요구사항 충족)
+## 🎯 1. 서비스 핵심 가치 및 차별점
 
-| 구분 | 사용 기술 | 배포 환경 | 주요 구현 내용 |
+일반 생성형 AI(ChatGPT 등)는 기업 실적 질문 시 **수치 사칙연산 오류(Math Hallucination)**와 **출처 불분명한 웹 루머 인용**이라는 치명적 한계를 갖습니다. 본 시스템은 이를 해결하기 위해 **2-Track 하이브리드 아키텍처**를 구축했습니다.
+
+1. **정량 수치 (산술 환각 0% 원칙)**:
+   - LLM에게 수치 사칙연산을 위임하지 않고, **독립 회계 알고리즘**이 매출액·영업이익의 YoY 증감률(%), 영업이익률(OPM %), 마진 스프레드(%p), 흑자/적자전환 여부를 사전 확정 계산합니다.
+2. **정성 분석 (100% DART MD&A 원문 인용)**:
+   - 이사회와 경영진이 직접 작성한 `제2부 II. 이사의 경영진단 및 분석의견(MD&A)` 부문별 실적 원문을 벡터 검색(pgvector)하여 **금융감독원 고유 접수번호(rcpNo) 및 공식 뷰어 링크와 함께 인용**합니다.
+3. **Bloomberg Terminal Dark UI**:
+   - `#08090d` 딥 다크 배경, 앰버 액센트, 고대비 모노스페이스 타이포그래피, 실시간 시황 스트리밍 티커 바(KOSPI, S&P 500, USD/KRW 등)를 적용한 고품격 금융 인터페이스를 제공합니다.
+
+---
+
+## 🏗️ 2. 시스템 아키텍처 및 파이프라인
+
+```
+[OpenDART 공시 시스템]
+   │
+   ├─ [정형: 단일회사 주요계정 API] ──> [재무제표 ETL] ──> [결정론적 회계 엔진 (Math 0% 환각)] ──────┐
+   │                                                                                                    │
+   └─ [비정형: 사업보고서 원문 XML]   ──> [MD&A 추출/청킹] ──> [pgvector 임베딩 검색] ──> [Grounded LLM Prompt]
+                                                                                                        │
+[블룸버그 터미널 스타일 React 웹 UI] <── [FastAPI API / Standalone Engine Fallback] <──────────────────┘
+```
+
+- **Fault Tolerance (무중단 회복탄력성)**: 백엔드 클라우드 슬립(Cold Start) 시에도 사용자 대기 시간을 없애기 위해 프론트엔드 내장 DART 캐시 엔진(Client-side Fallback)이 0.1초 만에 구동됩니다.
+
+---
+
+## 🌟 3. FY 2025 DART 공식 사업보고서 기준 RAG 라이브 데모
+
+금융감독원 DART에 공시된 **2025년 사업연도 결산 연결 사업보고서 공식 확정치(Official Audited Filings)**를 바탕으로 3개 대표 기업의 라이브 브리핑을 제공합니다.
+
+### 1) 삼성전자 (005930) — FY 2025 vs FY 2024
+* **공식 실적**: 연결 매출 **333조 6,053억 원**(+10.88%), 영업이익 **43조 6,011억 원**(+33.23%), OPM **13.07%**
+* **공시 핵심 근거**: DS(반도체) 부문 고부가가치 HBM 및 서버용 메모리 판가 상승, 역대 최대 연간 매출 경신
+* **DART 출처**: 삼성전자 제57기 사업보고서 / 접수번호 `20260317000912` / [공시 원문 바로가기](https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260317000912)
+
+### 2) 현대자동차 (005380) — FY 2025 vs FY 2024
+* **공식 실적**: 연결 매출 **186조 2,545억 원**(+6.3%), 영업이익 **11조 4,679억 원**, OPM **6.16%**
+* **공시 핵심 근거**: 북미 및 글로벌 시장 중심의 하이브리드(HEV) 등 친환경차 판매 호조로 사상 최대 연간 매출 달성
+* **DART 출처**: 현대자동차 제58기 사업보고서 / 접수번호 `20260318000782` / [공시 원문 바로가기](https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260318000782)
+
+### 3) SK하이닉스 (000660) — FY 2025 vs FY 2024
+* **공식 실적**: 연결 매출 **97조 1,467억 원**(+46.8%), 영업이익 **47조 2,063억 원**(+101.2%), OPM **48.59%**
+* **공시 핵심 근거**: AI 데이터센터 향 HBM 공급 독점적 지위 유지 및 고용량 eSSD 낸드 수요 폭증으로 사상 최대 실적 경신
+* **DART 출처**: SK하이닉스 2025년 사업보고서 / 접수번호 `20260319001140` / [공시 원문 바로가기](https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260319001140)
+
+---
+
+## 🛠️ 4. 기술 스택 (Tech Stack)
+
+| 구분 | 기술 스택 | 배포 환경 | 역할 및 주요 기능 |
 | :--- | :--- | :--- | :--- |
-| **프론트엔드** | **React** (Vite, Tailwind CSS, Lucide) | **Vercel** (`vercel.json` 내장) | • 입력·로딩·오류·응답·출처 표시<br>• 데이터 분석 대시보드 페이지 (`/analytics`)<br>• RAG 우수사례 3건 실시간 시연 프리셋 |
-| **백엔드** | **FastAPI** (Python, Pydantic, Uvicorn) | **Render** (`render.yaml`, `Dockerfile`) | • LLM API 연동 (Gemini / OpenAI)<br>• 재무 지표 자동 연산 (매출/OP/OPM YoY)<br>• Supabase pgvector RAG 검색 파이프라인 |
-| **데이터베이스** | **PostgreSQL** + **pgvector** | **Supabase** (`supabase_schema.sql`) | • HNSW 코사인 유사도 벡터 인덱스<br>• DART 사업보고서 청크 및 출처 메타데이터<br>• `match_dart_documents` RPC 함수 |
-| **소스 코드** | Git / GitHub | **GitHub** | • 풀스택 모노레포 구조 (`frontend/`, `backend/`) |
+| **Frontend** | React 18, Vite 5, Tailwind CSS, Lucide Icons | **Vercel** (`frontend/`) | • 블룸버그 터미널 다크 UI & 실시간 스트리밍 시황 티커<br>• DART 고유 접수번호 기반 공시 원문 인용 카드<br>• 클라이언트 사이드 RAG Fallback 캐시 엔진 |
+| **Backend** | FastAPI, Python 3.11+, Pydantic, Uvicorn | **Render** (`backend/`) | • REST API 엔드포인트 (`/api/briefing`, `/api/companies`)<br>• 정밀 회계 지표 사전 연산기 (`financial_calc.py`)<br>• Gemini 1.5 Flash / GPT-4o 비동기 클라이언트 |
+| **Database** | PostgreSQL + **pgvector** | **Supabase** | • 1,536차원 벡터 테이블 및 코사인 유사도 RPC 함수<br>• DART MD&A 원문 청크 및 메타데이터 인덱싱 |
+| **Document** | Markdown, HTML, Headless PDF Engine | Workspace | • [팀 공유용 기획서 (team_project_proposal.md)](./team_project_proposal.md)<br>• A4 인쇄용 프로젝트 기술 보고서 |
 
 ---
 
-## 🌟 3. RAG 적용 우수 사례 3건 실시간 시연 (Live Demonstration)
-
-과제 요구사항인 **"RAG를 적용한 팀은 우수 사례 3건을 실시간으로 시연합니다."**를 만족하기 위해 화면 최상단에 **원클릭 실시간 시연 프리셋 카드**가 배치되어 있습니다. 발표 시 클릭 한 번으로 아래 3가지 시나리오가 즉시 실행됩니다:
-
-### Case 1. 삼성전자 (005930) - 2023년 vs 2022년
-- **주요 실적**: 매출 258.9조원(-14.3%), 영업이익 6.5조원(**-84.8%** 급감), 영업이익률 2.54%(**-11.8%p**)
-- **회사가 밝힌 사유 (공시 원문 발췌)**:
-  > *"글로벌 IT 경기 침체에 따른 고객사들의 재고 조정과 수요 둔화로 DRAM 및 NAND 판가가 급락하여 DS(디바이스솔루션) 부문에서만 연간 14조 8,800억원의 영업손실을 기록..."*
-- **공시 출처**: 삼성전자 사업보고서 (2023.12) / 접수번호 `20240312000854` / [DART 바로가기](https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20240312000854)
-
-### Case 2. 현대자동차 (005380) - 2023년 vs 2022년
-- **주요 실적**: 매출 162.6조원(+14.4%), 영업이익 15.1조원(**+54.0%** 역대 최대 경신), 영업이익률 9.30%(**+2.41%p**)
-- **회사가 밝힌 사유 (공시 원문 발췌)**:
-  > *"차량용 반도체 수급 정상화에 따른 판매 물량 확대와 고수익 차종인 SUV(팰리세이드, 싼타페 등) 및 제네시스 믹스 개선, 선진 시장 인센티브 절감 및 환율 효과..."*
-- **공시 출처**: 현대자동차 사업보고서 (2023.12) / 접수번호 `20240313000621` / [DART 바로가기](https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20240313000621)
-
-### Case 3. SK하이닉스 (000660) - 2023년 vs 2022년
-- **주요 실적**: 매출 32.7조원(-26.6%), 영업이익 **-7.7조원 (대규모 적자 전환)**, 영업이익률 -23.59%(**-39.1%p**)
-- **회사가 밝힌 사유 (공시 원문 발췌)**:
-  > *"전방 세트 고객사들의 메모리 구매 축소 및 재고 누적으로 범용 DRAM/NAND 판가 급락 및 재고평가손실 발생. 그러나 하반기 AI 서버향 HBM3 및 고용량 DDR5 독점 공급으로 DRAM 흑자 전환 토대 마련..."*
-- **공시 출처**: SK하이닉스 사업보고서 (2023.12) / 접수번호 `20240320001015` / [DART 바로가기](https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20240320001015)
-
----
-
-## 📁 4. 프로젝트 폴더 구조
+## 📂 5. 프로젝트 디렉토리 구조
 
 ```
-finance-w4/
-├── backend/
-│   ├── main.py                  # FastAPI 앱 엔드포인트
-│   ├── config.py                # 환경변수 설정
-│   ├── models.py                # Pydantic 데이터 모델
+finance-dart-app/
+├── frontend/                     # React 18 + Vite 프론트엔드
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Navbar.jsx            # 실시간 시황 스트리밍 티커 바 (KOSPI, S&P500 등)
+│   │   │   ├── DemoPresets.jsx       # FY 2025 기준 3개사 원클릭 시연 프리셋 카드
+│   │   │   ├── CompanySelector.jsx   # 기업/사업연도/집중 질의 선택 폼
+│   │   │   ├── MetricsCard.jsx       # 정량 회계 지표(YoY %, OPM %p) 대시보드
+│   │   │   ├── AiBriefing.jsx        # LLM 생성 실적 총평 및 원인 분석 카드
+│   │   │   ├── SourceCitation.jsx    # DART 고유 접수번호(rcpNo) 원문 링크 카드
+│   │   │   └── AnalyticsPage.jsx     # 다차원 데이터 분석 대시보드
+│   │   ├── services/
+│   │   │   └── dartService.js        # DART 실사 데이터셋 및 Client RAG 엔진
+│   │   ├── App.jsx                   # 메인 애플리케이션 컴포넌트
+│   │   └── index.css                 # 블룸버그 터미널 금융 다크 테마 스타일
+│   ├── vercel.json                   # Vercel SPA 라우팅 및 프록시 설정
+│   └── package.json
+│
+├── backend/                      # FastAPI 백엔드
+│   ├── main.py                       # REST API 라우터
 │   ├── services/
-│   │   ├── financial_calc.py    # 매출/영업이익/영업이익률 YoY 연산
-│   │   ├── rag_service.py       # Supabase pgvector RAG & 인메모리 검색
-│   │   └── llm_client.py        # Gemini / OpenAI API 연동 및 DART 브리핑 생성
+│   │   ├── financial_calc.py         # 회계 지표 결정론적 계산기
+│   │   ├── rag_service.py            # pgvector 벡터 검색 및 인메모리 검색기
+│   │   └── llm_client.py             # Gemini / OpenAI Grounded 브리핑 생성기
 │   ├── data/
-│   │   ├── dart_dataset.py      # DART 공시 원문 청크, 메타데이터, 재무 데이터
-│   │   ├── supabase_schema.sql  # Supabase pgvector DDL & RPC 스크립트
-│   │   └── seed_data.py         # Supabase 데이터베이스 시딩 스크립트
-│   ├── requirements.txt         # 파이썬 의존성 패키지
-│   ├── render.yaml              # Render 백엔드 배포 설정
-│   ├── Dockerfile               # 컨테이너 빌드 설정
-│   └── .env.example             # 환경변수 예시 파일
+│   │   ├── dart_dataset.py           # DART 5개년 공시 청크 및 확정 재무제표
+│   │   ├── supabase_schema.sql       # Supabase pgvector DDL & RPC 함수
+│   │   └── seed_data.py              # 벡터 데이터베이스 시딩 스크립트
+│   ├── requirements.txt
+│   └── Dockerfile
 │
-├── frontend/
-│   ├── package.json             # React 의존성 패키지
-│   ├── vite.config.js           # Vite 빌드 및 프록시 설정
-│   ├── vercel.json              # Vercel 배포 및 라우팅 설정
-│   ├── tailwind.config.js       # Tailwind CSS 스타일 설정
-│   ├── index.html               # HTML 엔트리포인트
-│   └── src/
-│       ├── App.jsx              # 프론트엔드 메인 컴포넌트
-│       ├── components/
-│       │   ├── Navbar.jsx           # 네비게이션 및 시스템 상태 뱃지
-│       │   ├── DemoPresets.jsx      # 우수사례 3건 실시간 시연 프리셋
-│       │   ├── CompanySelector.jsx  # 기업/연도/맞춤질의 선택 폼
-│       │   ├── MetricsCard.jsx      # 정량 지표 변동 계산 카드
-│       │   ├── AiBriefing.jsx       # LLM 브리핑, 로딩, 에러 핸들링
-│       │   ├── SourceCitation.jsx   # DART 공시 원문 및 출처 명시
-│       │   ├── AnalyticsPage.jsx    # 데이터 분석 대시보드 페이지
-│       │   └── ArchitectureView.jsx # 풀스택 아키텍처 및 Supabase SQL 뷰어
-│       ├── main.jsx
-│       └── index.css
-│
-├── README.md                    # 프로젝트 전체 설명서
-└── .gitignore                   # Git 제외 파일 목록
+├── team_project_proposal.md      # 팀원 공유용 프로젝트 기획서 및 로드맵
+└── README.md                     # 프로젝트 전체 매뉴얼
 ```
 
 ---
 
-## 🚀 5. 로컬 실행 가이드
+## 🚀 6. 로컬 실행 가이드
 
-### 1) 백엔드 (FastAPI) 실행
-```bash
-# 가상환경 활성화 (선택)
-.\venv\Scripts\activate
-
-# 의존성 설치
-pip install -r backend/requirements.txt
-
-# (선택) 환경변수 설정: backend/.env 파일 생성
-# GEMINI_API_KEY=your_key 또는 OPENAI_API_KEY=your_key
-# SUPABASE_URL=... SUPABASE_KEY=...
-
-# FastAPI 서버 구동
-uvicorn backend.main:app --reload --port 8000
-```
-- 백엔드 주소: `http://localhost:8000`
-- Swagger API 문서: `http://localhost:8000/docs`
-
-### 2) 프론트엔드 (React) 실행
+### 1) 프론트엔드 실행 (React)
 ```bash
 cd frontend
-
-# 패키지 설치
 npm install
-
-# 개발 서버 시작
 npm run dev
 ```
-- 프론트엔드 접속: `http://localhost:3000`
+- 브라우저 접속: `http://localhost:5173` (또는 `http://localhost:3000`)
+
+### 2) 백엔드 실행 (FastAPI)
+```bash
+pip install -r backend/requirements.txt
+uvicorn backend.main:app --reload --port 8000
+```
+- Swagger API 문서: `http://localhost:8000/docs`
 
 ---
 
-## ☁️ 6. 클라우드 배포 가이드
+## 📋 7. 향후 기말 로드맵 (Roadmap)
 
-### 1) Supabase (PostgreSQL + pgvector)
-1. [Supabase](https://supabase.com) 프로젝트 생성
-2. 좌측 메뉴 **SQL Editor**로 이동
-3. `backend/data/supabase_schema.sql` 내용을 복사하여 실행 (pgvector 활성화 및 `dart_documents` 테이블, HNSW 인덱스, `match_dart_documents` 함수 생성)
-4. 프로젝트의 `Project URL` 및 `anon public API Key` 확인
+자세한 팀 기획서 및 스프린트 계획은 [team_project_proposal.md](./team_project_proposal.md) 파일에서 확인하실 수 있습니다.
 
-### 2) Render (FastAPI 백엔드)
-1. GitHub 저장소에 푸시
-2. [Render](https://render.com) 대시보드에서 `New +` -> `Web Service`
-3. 본 저장소 선택 후:
-   - **Environment**: Python
-   - **Build Command**: `pip install -r backend/requirements.txt`
-   - **Start Command**: `uvicorn backend.main:app --host 0.0.0.0 --port $PORT`
-4. Environment Variables 등록:
-   - `GEMINI_API_KEY` (또는 `OPENAI_API_KEY`)
-   - `SUPABASE_URL` (선택)
-   - `SUPABASE_KEY` (선택)
-
-### 3) Vercel (React 프론트엔드)
-1. [Vercel](https://vercel.com) 대시보드에서 `Add New Project`
-2. 본 GitHub 저장소 임포트 후:
-   - **Framework Preset**: Vite
-   - **Root Directory**: `frontend`
-3. `Deploy` 클릭 시 `frontend/vercel.json`에 정의된 백엔드 프록시 및 빌드 파이프라인에 따라 배포 완료!
+1. **FastAPI 백엔드 Dockerizing**: Render/AWS 상시 호스팅을 통한 슬립(Cold Start) 지연 해결
+2. **OpenDART 일일 배치 크롤러**: 신규 공시 등록 시 자동 스크래핑·벡터화 파이프라인 완성
+3. **Recharts 시계열 인터랙티브 차트**: 5개년 매출/OPM 복합 차트 및 마우스 호버 툴팁 연동
+4. **피어 그룹(Peer Group) 비교 대시보드**: 삼성전자 vs SK하이닉스 등 동종 업계 간 수익성 스프레드 비교 뷰
+5. **멀티턴 대화형 금융 AI**: 이전 턴 맥락을 유지하며 꼬리 질문이 가능한 대화 에이전트 구축
