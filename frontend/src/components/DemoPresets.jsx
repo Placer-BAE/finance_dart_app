@@ -1,5 +1,5 @@
 import React from 'react';
-import { TrendingDown, TrendingUp, AlertCircle, ArrowUpRight, CheckCircle2 } from 'lucide-react';
+import { TrendingDown, TrendingUp, AlertCircle, ArrowDown, ArrowUpRight } from 'lucide-react';
 
 export default function DemoPresets({ demoCases, onSelectCase, selectedCaseId, isLoading }) {
   const getBadgeStyle = (color) => {
@@ -101,8 +101,8 @@ export default function DemoPresets({ demoCases, onSelectCase, selectedCaseId, i
                       : 'bg-[#1e2233] hover:bg-amber-500 hover:text-black text-slate-200'
                   }`}
                 >
-                  <span>{isSelected && isLoading ? 'ANALYZING...' : '이 기업 실적 브리핑 열기'}</span>
-                  <ArrowUpRight className="w-3.5 h-3.5" />
+                  <span>{isSelected && isLoading ? 'ANALYZING...' : '이 기업 실적 브리핑 밑에서 확인하기'}</span>
+                  <ArrowDown className="w-3.5 h-3.5" />
                 </button>
               </div>
             </div>
