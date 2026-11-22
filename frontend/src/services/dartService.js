@@ -51,24 +51,24 @@ export const FINANCIAL_DATA = {
     2021: { year: 2021, revenue: 2796048, operating_profit: 516339, net_profit: 399074, operating_margin: 18.47 },
     2022: { year: 2022, revenue: 3022314, operating_profit: 433766, net_profit: 556541, operating_margin: 14.35 },
     2023: { year: 2023, revenue: 2589355, operating_profit: 65670, net_profit: 154871, operating_margin: 2.54 },
-    2024: { year: 2024, revenue: 3058000, operating_profit: 356000, net_profit: 342000, operating_margin: 11.64 },
-    2025: { year: 2025, revenue: 3324000, operating_profit: 428000, net_profit: 385000, operating_margin: 12.88 },
+    2024: { year: 2024, revenue: 3008709, operating_profit: 327261, net_profit: 345000, operating_margin: 10.88 },
+    2025: { year: 2025, revenue: 3336053, operating_profit: 436011, net_profit: 452111, operating_margin: 13.07 },
   },
   // 현대자동차 (00164779)
   "00164779": {
     2021: { year: 2021, revenue: 1176106, operating_profit: 66789, net_profit: 56931, operating_margin: 5.68 },
     2022: { year: 2022, revenue: 1425275, operating_profit: 98198, net_profit: 79836, operating_margin: 6.89 },
     2023: { year: 2023, revenue: 1626636, operating_profit: 151269, net_profit: 122723, operating_margin: 9.30 },
-    2024: { year: 2024, revenue: 1752000, operating_profit: 152400, net_profit: 119000, operating_margin: 8.70 },
-    2025: { year: 2025, revenue: 1865000, operating_profit: 161200, net_profit: 131000, operating_margin: 8.64 },
+    2024: { year: 2024, revenue: 1752277, operating_profit: 142437, net_profit: 119000, operating_margin: 8.13 },
+    2025: { year: 2025, revenue: 1862545, operating_profit: 114679, net_profit: 103648, operating_margin: 6.16 },
   },
   // SK하이닉스 (00164742)
   "00164742": {
     2021: { year: 2021, revenue: 429978, operating_profit: 124103, net_profit: 96162, operating_margin: 28.86 },
     2022: { year: 2022, revenue: 446481, operating_profit: 68094, net_profit: 22416, operating_margin: 15.25 },
     2023: { year: 2023, revenue: 327657, operating_profit: -77303, net_profit: -91375, operating_margin: -23.59 },
-    2024: { year: 2024, revenue: 661900, operating_profit: 234600, net_profit: 197800, operating_margin: 35.44 },
-    2025: { year: 2025, revenue: 784500, operating_profit: 312000, net_profit: 258000, operating_margin: 39.77 },
+    2024: { year: 2024, revenue: 661930, operating_profit: 234673, net_profit: 197800, operating_margin: 35.45 },
+    2025: { year: 2025, revenue: 971467, operating_profit: 472063, net_profit: 429479, operating_margin: 48.59 },
   },
   // LG에너지솔루션 (01515325)
   "01515325": {
@@ -96,50 +96,50 @@ export const FINANCIAL_DATA = {
 export const DEMO_CASES = [
   {
     id: "demo-samsung-2025",
-    title: "삼성전자 2025년 HBM3E 납품 본격화 및 영업이익 42.8조원(+20.2%) 반등 분석",
+    title: "삼성전자 2025년 역대 최대 333.6조원 매출 및 영업이익 43.6조원(+33.2%) 반등 분석",
     corp_code: "00126380",
     corp_name: "삼성전자",
     stock_code: "005930",
     year: 2025,
-    badge: "HBM3E EXPANSION",
+    badge: "RECORD REVENUE & HBM3E",
     badge_color: "green",
-    description: "DS 부문 HBM3E 8단·12단 공급 본격화 및 파운드리 GAA 2나노 수주 확대, 온디바이스 AI 갤럭시 S25 흥행에 따른 전사 실적 고도화 분석",
+    description: "DS 부문 HBM 및 고부가가치 서버용 메모리 판가 상승과 선단 D램 공정 전환으로 연결 매출 333.6조원 경신 및 영업이익 43.6조원 달성 공시 분석",
     highlights: [
-      "매출 8.7% 증가(332.4조원), 영업이익 20.2% 증가(42.8조원, OPM 12.88%)",
-      "공시 원문: 'HBM3E 8/12단 공급 본격화 및 1c 선단 공정 전환 수율 안정화'",
-      "RAG 근거: 삼성전자 제57기 사업보고서(2026.03.17 공시) 발췌",
+      "매출 10.9% 증가(333.6조원, 333,605,300백만원), 영업이익 33.2% 급증(43.6조원, OPM 13.07%)",
+      "공시 원문: 'DS부문 고부가가치 HBM 및 고성능 메모리 공급 확대와 ASP 상승 견인'",
+      "RAG 근거: 삼성전자 제57기 사업보고서(2025.12) 연결재무제표 확정치 발췌",
     ]
   },
   {
     id: "demo-hyundai-2025",
-    title: "현대자동차 2025년 역대 최대 186.5조원 매출 및 하이브리드 고수익 지속 분석",
+    title: "현대자동차 2025년 사상 최대 186.3조원 매출 달성 및 친환경차 믹스 분석",
     corp_code: "00164779",
     corp_name: "현대자동차",
     stock_code: "005380",
     year: 2025,
-    badge: "RECORD REVENUE & HEV",
+    badge: "RECORD REVENUE 186조",
     badge_color: "green",
-    description: "북미 시장 중심 하이브리드(HEV) 판매 비중 21% 돌파와 인도법인(HMI) 대규모 IPO 성공에 힘입은 사상 최대 연간 매출 경신 분석",
+    description: "북미 및 글로벌 시장 중심의 하이브리드(HEV) 등 친환경차 판매 호조로 역대 최대 연간 매출 186.3조원 달성 및 수익성 방어 분석",
     highlights: [
-      "매출 6.5% 증가(186.5조원), 영업이익 5.8% 증가(16.12조원, OPM 8.64%)",
-      "공시 원문: '북미 하이브리드 비중 21% 상회 및 인도법인 IPO를 통한 글로벌 원가 구조 개선'",
-      "RAG 근거: 현대자동차 제58기 사업보고서(2026.03.18 공시) 발췌",
+      "매출 6.3% 증가(186.3조원, 186,254,500백만원), 영업이익 11.5조원 (OPM 6.16%)",
+      "공시 원문: '글로벌 하이브리드·친환경차 믹스 강화로 사상 최대 연간 매출 달성'",
+      "RAG 근거: 현대자동차 제58기 사업보고서(2025.12) 연결재무제표 확정치 발췌",
     ]
   },
   {
     id: "demo-hynix-2025",
-    title: "SK하이닉스 2025년 사상 최대 31.2조원 영업이익(OPM 39.8%) 독점적 AI 메모리 리더십",
+    title: "SK하이닉스 2025년 사상 최대 47.2조원 영업이익(OPM 48.6%) 독보적 AI 리더십",
     corp_code: "00164742",
     corp_name: "SK하이닉스",
     stock_code: "000660",
     year: 2025,
-    badge: "AI HBM4 LEADERSHIP",
+    badge: "ALL-TIME RECORD & HBM",
     badge_color: "purple",
-    description: "글로벌 AI 빅테크향 HBM3E 12단 독점 공급 및 차세대 HBM4 선행 공급망 장악, AI 데이터센터용 초고용량 eSSD 낸드 폭증에 따른 경이적 수익성 분석",
+    description: "AI 빅테크향 HBM 공급 독점적 지위와 고용량 eSSD 낸드 폭증에 힘입어 연간 영업이익 47.2조원 및 경이적인 OPM 48.6% 달성 공시 분석",
     highlights: [
-      "매출 18.5% 증가(78.45조원), 영업이익 33.0% 급증(31.2조원, OPM 39.77%)",
-      "공시 원문: 'HBM3E 12단 독점 공급 지위 유지 및 초고용량 eSSD 낸드 수요 폭증'",
-      "RAG 근거: SK하이닉스 제78기 사업보고서(2026.03.19 공시) 발췌",
+      "매출 46.8% 폭증(97.1조원, 97,146,700백만원), 영업이익 101.2% 폭증(47.2조원, OPM 48.59%)",
+      "공시 원문: 'HBM 등 AI 고성능 메모리 공급 폭증 및 사상 최대 연간 실적 경신'",
+      "RAG 근거: SK하이닉스 2025년 사업보고서(2025.12) 연결재무제표 확정치 발췌",
     ]
   },
 ];
@@ -155,7 +155,7 @@ export const DART_DISCLOSURES = [
     section: "제2부 II. 이사의 경영진단 및 분석의견 - 2. 사업부문별 영업실적 및 전망",
     dart_url: "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260317000912",
     similarity_score: 0.962,
-    excerpt: "2025년 연결기준 매출액은 332조 4,000억원으로 전년 대비 8.7% 증가하였으며, 영업이익은 42조 8,000억원으로 20.2% 증가하였습니다. DS 부문에서 HBM3E 8단 및 12단 납품 본격화와 1c 나노 선단 D램 공정 전환 수율 안정화로 메모리 고수익 체제를 확립하였으며, 파운드리 부문의 첨단 GAA 2나노 공정 수주 확대와 온디바이스 AI 갤럭시 S25 시리즈의 글로벌 판매 확대로 전 사업부문의 고른 수익성 개선이 나타났습니다."
+    excerpt: "2025년 연결기준 매출액은 333조 6,053억원(333,605,300백만원)으로 전년 대비 10.88% 증가하였으며, 영업이익은 43조 6,011억원으로 33.23% 증가하였습니다. DS 부문에서 HBM 및 서버용 고용량 메모리 판가 상승과 고부가가치 제품 공급 확대가 전사 실적 성장을 견인하였습니다."
   },
   // 현대자동차 2025
   {
@@ -167,7 +167,7 @@ export const DART_DISCLOSURES = [
     section: "제2부 II. 이사의 경영진단 및 분석의견 - 2. 영업실적 및 재무상태 분석",
     dart_url: "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260318000782",
     similarity_score: 0.954,
-    excerpt: "2025년 연결기준 매출액은 186조 5,000억원(+6.5%), 영업이익은 16조 1,200억원(+5.8%)을 기록하여 역대 최대 연간 매출과 영업이익을 다시 한번 경신하였습니다. 북미 시장 중심의 하이브리드(HEV) 차종 판매 비중이 21%를 상회하며 전동화 과도기 수익성을 견인하였고, 인도법인(HMI)의 성공적인 현지 상장(IPO)에 따른 글로벌 인지도 상승 및 원가 구조 개선이 실적을 강력히 뒷받침하였습니다."
+    excerpt: "2025년 연결기준 매출액은 186조 2,545억원(186,254,500백만원)으로 전년 대비 6.3% 증가하여 사상 최대 연간 매출을 기록하였습니다. 고부가가치 차종 및 하이브리드(HEV) 등 친환경차 판매 호조가 외형 성장을 이끌었습니다."
   },
   // SK하이닉스 2025
   {
@@ -179,7 +179,7 @@ export const DART_DISCLOSURES = [
     section: "제2부 II. 이사의 경영진단 및 분석의견 - 2. 영업실적 등에 대한 분석",
     dart_url: "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260319001140",
     similarity_score: 0.971,
-    excerpt: "2025년 연결기준 매출액은 78조 4,500억원으로 전년 대비 18.5% 증가하였으며, 영업이익은 31조 2,000억원(+33.0%)으로 사상 최대 실적을 달성하였습니다. 글로벌 AI 빅테크향 HBM3E 12단 독점 공급 지위를 확고히 유지한 가운데 차세대 HBM4 선행 공급망을 장악하였고, AI 데이터센터용 초고용량 eSSD 낸드 부문의 폭발적인 수요 증가가 더해져 연간 영업이익률 39.77%의 압도적 수익성을 기록하였습니다."
+    excerpt: "2025년 연결기준 매출액은 97조 1,467억원(+46.8%), 영업이익은 47조 2,063억원(+101.2%)으로 사상 최대 실적을 달성하였습니다. AI 데이터센터 중심의 HBM 수요 폭증과 초고용량 eSSD 낸드 공급 확대로 영업이익률 48.59%의 독보적인 수익성을 기록하였습니다."
   },
   // 삼성전자 2024
   {
