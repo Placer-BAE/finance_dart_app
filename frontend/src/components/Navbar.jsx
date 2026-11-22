@@ -5,9 +5,9 @@ const INITIAL_MARKETS = [
   { symbol: 'KOSPI', price: 4869.96, change: -5.21, isUp: false },
   { symbol: 'KOSDAQ', price: 645.68, change: -5.71, isUp: false },
   { symbol: 'USD/KRW', price: 1345.50, change: -0.15, isUp: false },
-  { symbol: 'S&P 500', price: 5969.34, change: 0.35, isUp: true },
-  { symbol: 'NASDAQ', price: 18972.42, change: 0.16, isUp: true },
-  { symbol: 'US 10Y', price: 4.41, change: -0.02, isUp: false, unit: '%' },
+  { symbol: 'S&P 500', price: 6910.39, change: -3.70, isUp: false },
+  { symbol: 'NASDAQ', price: 22617.73, change: -5.28, isUp: false },
+  { symbol: 'US 10Y', price: 4.94, change: 0.06, isUp: true, unit: '%' },
 ];
 
 export default function Navbar({ activeTab, setActiveTab }) {
