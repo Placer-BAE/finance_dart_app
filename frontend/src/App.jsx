@@ -22,7 +22,7 @@ export default function App() {
   const [companies, setCompanies] = useState(COMPANIES);
   const [demoCases, setDemoCases] = useState(DEMO_CASES);
   const [selectedCorpCode, setSelectedCorpCode] = useState('00126380'); // 삼성전자
-  const [selectedYear, setSelectedYear] = useState(2023);
+  const [selectedYear, setSelectedYear] = useState(2025);
   const [customQuestion, setCustomQuestion] = useState('');
   
   const [metrics, setMetrics] = useState(null);
@@ -30,7 +30,7 @@ export default function App() {
   const [sources, setSources] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [selectedCaseId, setSelectedCaseId] = useState('demo-samsung-2023');
+  const [selectedCaseId, setSelectedCaseId] = useState('demo-samsung-2025');
 
   // Load companies & demo presets
   useEffect(() => {
@@ -54,8 +54,8 @@ export default function App() {
         setDemoCases(DEMO_CASES);
       });
 
-    // Auto-execute default case: 삼성전자 2023
-    executeBriefing('00126380', 2023, '', 'demo-samsung-2023');
+    // Auto-execute default case: 삼성전자 2025
+    executeBriefing('00126380', 2025, '', 'demo-samsung-2025');
   }, []);
 
   const executeBriefing = async (corpCode, year, question = '', caseId = null) => {
