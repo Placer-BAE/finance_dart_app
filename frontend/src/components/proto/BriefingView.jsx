@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import IncomeStatementSankey from './IncomeStatementSankey';
 
 export default function BriefingView({ company, onBack, onGoTimeline }) {
   const compName = company ? company.name : '삼성전자';
@@ -303,6 +304,7 @@ export default function BriefingView({ company, onBack, onGoTimeline }) {
 
           {/* Sub Navigation Bar */}
           <nav aria-label="브리핑 영역" style={{ display: 'flex', gap: '4px', overflowX: 'auto' }}>
+            <a className="tab" href="#sankey" style={{ background: 'rgba(52,224,200,0.18)', color: '#34E0C8', fontWeight: 700 }}>손익 흐름도 (Sankey)</a>
             <a className="tab" href="#reasons">회사가 밝힌 이유</a>
             <a className="tab" href="#segments">사업부문</a>
             <a className="tab" href="#crosscheck">숫자 대조</a>
@@ -315,7 +317,13 @@ export default function BriefingView({ company, onBack, onGoTimeline }) {
       {/* Main 2-Column Section */}
       <main style={{ maxWidth: '1240px', margin: '0 auto', padding: '28px 24px 56px', display: 'flex', flexWrap: 'wrap', gap: '24px', alignItems: 'flex-start' }}>
         {/* Left Column (2/3 width) */}
-        <div style={{ flex: '999 1 560px', minWidth: 0, display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <div style={{ flex: '999 1 560px', minWidth: 0, display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          
+          {/* 1. Income Statement Sankey Flow (App Economy Insights style) */}
+          <section id="sankey" aria-label="손익계산서 흐름도">
+            <IncomeStatementSankey company={company} />
+          </section>
+
           <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'baseline', gap: '8px' }}>
             <h2 style={{ margin: 0, fontSize: '24px', letterSpacing: '-0.02em', fontWeight: 700 }}>{currentData.label} 변화</h2>
             <p style={{ margin: 0, fontSize: '14px', color: '#4A5563', fontVariantNumeric: 'tabular-nums' }}>
