@@ -100,8 +100,8 @@ export default function MainView({ onSelectCompany }) {
   return (
     <div>
       {/* Hero Section */}
-      <section style={{ background: 'radial-gradient(120% 140% at 80% 0%, #17304A 0%, #0C1622 55%)', color: '#EAF1F7', position: 'relative', overflow: 'hidden' }}>
-        <svg width="100%" height="100%" viewBox="0 0 1440 360" preserveAspectRatio="none" aria-hidden="true" style={{ position: 'absolute', inset: 0, opacity: 0.55 }}>
+      <section style={{ background: 'radial-gradient(120% 140% at 80% 0%, #17304A 0%, #0C1622 55%)', color: '#EAF1F7', position: 'relative', overflow: 'visible', zIndex: 50 }}>
+        <svg width="100%" height="100%" viewBox="0 0 1440 360" preserveAspectRatio="none" aria-hidden="true" style={{ position: 'absolute', inset: 0, opacity: 0.55, pointerEvents: 'none' }}>
           <defs>
             <linearGradient id="hl" x1="0" x2="1">
               <stop offset="0" stopColor="#34E0C8" stopOpacity="0" />
@@ -270,18 +270,80 @@ export default function MainView({ onSelectCompany }) {
         </p>
 
         {sorted.length === 0 ? (
-          <div style={{ background: '#FFFFFF', border: '1px solid #E3E7EC', borderRadius: '18px', padding: '36px 24px', textAlign: 'center', display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'center' }}>
-            <p style={{ margin: 0, fontSize: '17px', fontWeight: 600 }}>‘{q}’에 해당하는 기업이 이 목록에 없습니다</p>
-            <p style={{ margin: 0, fontSize: '14px', color: '#4A5563' }}>현재 시가총액 상위 기업만 제공합니다. 다른 시장 탭도 확인해 보세요.</p>
-            <button
-              type="button"
-              className="btn"
-              onClick={() => setQ('')}
-              style={{ marginTop: '8px', minHeight: '44px', padding: '0 18px', borderRadius: '12px', border: 0, background: '#10161E', color: '#FFFFFF', fontFamily: 'inherit', fontSize: '14px', fontWeight: 600 }}
-            >
-              검색 지우기
-            </button>
-          </div>
+          liveMatches.length > 0 ? (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '8px' }}>
+                <span style={{ fontSize: '18px', fontWeight: 700, color: '#10161E', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span>⚡ OpenDART 전체 상장사 검색 결과</span>
+                  <span style={{ fontSize: '13px', color: '#0B7A70', background: '#E3F5F2', padding: '3px 10px', borderRadius: '999px', fontWeight: 600 }}>
+                    {liveMatches.length}개 발견
+                  </span>
+                </span>
+                <span style={{ fontSize: '12px', color: '#64748B' }}>
+                  금융감독원 DART 공시 원문 & Gemini AI 실적 분석
+                </span>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(290px, 1fr))', gap: '16px' }}>
+                {liveMatches.map((comp) => (
+                  <article
+                    key={comp.corp_code}
+                    className="card"
+                    style={{
+                      background: '#FFFFFF', border: '1px solid #E3E7EC', borderRadius: '20px', padding: '22px',
+                      display: 'flex', flexDirection: 'column', gap: '14px', boxShadow: '0 2px 12px rgba(0,0,0,0.03)'
+                    }}
+                  >
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                        <h2 style={{ margin: 0, fontSize: '20px', fontWeight: 800, color: '#10161E' }}>{comp.corp_name}</h2>
+                        <span style={{ fontSize: '13px', color: '#64748B' }}>{comp.stock_code} · 상장사</span>
+                      </div>
+                      <span style={{ fontSize: '11px', fontWeight: 700, padding: '4px 8px', borderRadius: '6px', background: '#E3F5F2', color: '#075F57' }}>
+                        DART 실시간 연동
+                      </span>
+                    </div>
+
+                    <p style={{ margin: 0, fontSize: '13px', color: '#4A5563', lineHeight: 1.55 }}>
+                      DART 확정 손익계산서 주요 계정(매출액, 영업이익) 및 Gemini AI 실적 요인 브리핑이 제공됩니다.
+                    </p>
+
+                    <button
+                      type="button"
+                      className="btn"
+                      onClick={() => onSelectCompany({
+                        name: comp.corp_name,
+                        code: comp.stock_code,
+                        corp_code: comp.corp_code,
+                        isLive: true
+                      })}
+                      style={{
+                        minHeight: '44px', width: '100%', borderRadius: '12px', border: 0,
+                        background: '#10161E', color: '#FFFFFF', fontFamily: 'inherit',
+                        fontSize: '14px', fontWeight: 600, cursor: 'pointer',
+                        display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '6px'
+                      }}
+                    >
+                      실시간 DART 브리핑 보기 →
+                    </button>
+                  </article>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div style={{ background: '#FFFFFF', border: '1px solid #E3E7EC', borderRadius: '18px', padding: '36px 24px', textAlign: 'center', display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'center' }}>
+              <p style={{ margin: 0, fontSize: '17px', fontWeight: 600 }}>‘{q}’에 해당하는 기업을 찾을 수 없습니다</p>
+              <p style={{ margin: 0, fontSize: '14px', color: '#4A5563' }}>정확한 상장사 사명 또는 6자리 종목코드를 입력해 주세요.</p>
+              <button
+                type="button"
+                className="btn"
+                onClick={() => setQ('')}
+                style={{ marginTop: '8px', minHeight: '44px', padding: '0 18px', borderRadius: '12px', border: 0, background: '#10161E', color: '#FFFFFF', fontFamily: 'inherit', fontSize: '14px', fontWeight: 600 }}
+              >
+                검색 지우기
+              </button>
+            </div>
+          )
         ) : (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(290px, 1fr))', gap: '16px' }}>
             {sorted.map((c) => {
