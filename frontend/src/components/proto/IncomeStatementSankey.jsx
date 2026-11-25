@@ -184,7 +184,7 @@ export function getCompanySankeyData(company, liveData) {
     return {
       company: name,
       code: code || '000000',
-      period: `${liveData.year}년 DART 실시간 확정`,
+      period: `FY${liveData.year} 사업보고서 확정`,
       unit: unit,
       revenue: rev,
       revGrowth: `${fin.revenue.growth_rate > 0 ? '+' : ''}${fin.revenue.growth_rate}%`,

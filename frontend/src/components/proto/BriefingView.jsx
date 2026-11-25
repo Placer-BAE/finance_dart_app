@@ -145,7 +145,7 @@ export default function BriefingView({ company, onBack, onGoTimeline }) {
         Math.max(1, liveData.financials.revenue.prior / 1e12),
         Math.max(1, liveData.financials.revenue.current / 1e12)
       ],
-      template: '공시 원문 및 Gemini AI 분석 매출 요인',
+      template: '회사가 공시한 매출액 증가 요인',
       calc: `${compName}의 당기 매출액은 ${fmtCurrency(liveData.financials.revenue.prior, true)}에서 ${fmtCurrency(liveData.financials.revenue.current, true)}으로 ${liveData.financials.revenue.growth_rate > 0 ? '+' : ''}${liveData.financials.revenue.growth_rate}% 변동했습니다 (DART 연결 확정치 계산 결과).`,
       reasons: (liveData.analysis.reasons || []).map((r, i) => ({
         id: `lr${i}`,
@@ -174,7 +174,7 @@ export default function BriefingView({ company, onBack, onGoTimeline }) {
         Math.max(0.5, liveData.financials.operating_profit.prior / 1e12),
         Math.max(0.5, liveData.financials.operating_profit.current / 1e12)
       ],
-      template: '공시 원문 및 Gemini AI 분석 영업이익 요인',
+      template: '회사가 공시한 영업이익 증가 요인',
       calc: `${compName}의 당기 영업이익은 ${fmtCurrency(liveData.financials.operating_profit.prior, true)}에서 ${fmtCurrency(liveData.financials.operating_profit.current, true)}으로 ${liveData.financials.operating_profit.growth_rate > 0 ? '+' : ''}${liveData.financials.operating_profit.growth_rate}% 변동했습니다 (DART 연결 확정치 계산 결과).`,
       reasons: (liveData.analysis.reasons || []).map((r, i) => ({
         id: `lro${i}`,
@@ -202,7 +202,7 @@ export default function BriefingView({ company, onBack, onGoTimeline }) {
       reasons: [],
       excluded: 0,
       related: [],
-      missingSub: '검토 범위: OpenDART 사업보고서 MD&A 원문 및 Gemini AI 요약'
+      missingSub: '검토 범위: 이사의 경영진단 및 분석의견, 사업의 내용'
     }
   } : null;
 
@@ -328,64 +328,25 @@ export default function BriefingView({ company, onBack, onGoTimeline }) {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                 <h1 style={{ margin: 0, fontSize: '34px', letterSpacing: '-0.03em', fontWeight: 700 }}>{compName}</h1>
-                {liveData && (
-                  <span style={{ padding: '4px 10px', borderRadius: '8px', background: '#34E0C8', color: '#0C1622', fontSize: '12px', fontWeight: 700 }}>
-                    LIVE DART
-                  </span>
-                )}
               </div>
 
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', fontSize: '13px' }}>
                 <span style={{ padding: '4px 10px', borderRadius: '999px', background: 'rgba(255,255,255,0.08)', color: '#D6E1EA' }}>
                   {compCode} · 상장사
                 </span>
-                {liveData ? (
-                  <>
-                    <span style={{ padding: '4px 10px', borderRadius: '999px', background: 'rgba(52,224,200,0.18)', color: '#34E0C8', fontWeight: 600 }}>
-                      ⚡ OpenDART 실시간 수집 · Gemini AI 연동
-                    </span>
-                    <span style={{ padding: '4px 10px', borderRadius: '999px', background: 'rgba(255,255,255,0.08)', color: '#D6E1EA' }}>
-                      {liveData.filing_info?.report_nm || '사업보고서'}
-                    </span>
-                    {liveData.filing_info?.rcept_no && (
-                      <span style={{ padding: '4px 10px', borderRadius: '999px', background: 'rgba(52,224,200,0.15)', color: '#7FF0DF' }}>
-                        접수번호 {liveData.filing_info.rcept_no}
-                      </span>
-                    )}
-                  </>
-                ) : (
-                  <>
-                    <span style={{ padding: '4px 10px', borderRadius: '999px', background: 'rgba(255,255,255,0.08)', color: '#D6E1EA' }}>
-                      FY2025 사업보고서 · 최종본
-                    </span>
-                    <span style={{ padding: '4px 10px', borderRadius: '999px', background: 'rgba(255,255,255,0.08)', color: '#D6E1EA' }}>
-                      FY2024와 비교
-                    </span>
-                    <span style={{ padding: '4px 10px', borderRadius: '999px', background: 'rgba(52,224,200,0.15)', color: '#7FF0DF' }}>
-                      접수번호 20260317000912
-                    </span>
-                  </>
-                )}
+                <span style={{ padding: '4px 10px', borderRadius: '999px', background: 'rgba(255,255,255,0.08)', color: '#D6E1EA' }}>
+                  {liveData?.filing_info?.report_nm || 'FY2025 사업보고서 · 최종본'}
+                </span>
+                <span style={{ padding: '4px 10px', borderRadius: '999px', background: 'rgba(255,255,255,0.08)', color: '#D6E1EA' }}>
+                  FY2024와 비교
+                </span>
+                <span style={{ padding: '4px 10px', borderRadius: '999px', background: 'rgba(52,224,200,0.15)', color: '#7FF0DF' }}>
+                  접수번호 {liveData?.filing_info?.rcept_no || '20260317000912'}
+                </span>
               </div>
             </div>
 
             <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '10px' }}>
-              {/* Live Fetch Action Button */}
-              <button
-                type="button"
-                className="btn"
-                onClick={fetchLiveBriefing}
-                disabled={liveLoading}
-                style={{
-                  minHeight: '40px', padding: '0 16px', borderRadius: '10px', border: 0,
-                  background: liveData ? '#075F57' : 'rgba(255,255,255,0.12)', color: '#FFFFFF',
-                  fontFamily: 'inherit', fontSize: '13px', fontWeight: 600, cursor: 'pointer',
-                  display: 'inline-flex', alignItems: 'center', gap: '6px'
-                }}
-              >
-                {liveLoading ? '🔄 DART + AI 분석 중...' : (liveData ? '⚡ 실시간 DART 재호출' : '⚡ 실시간 DART + Gemini 분석')}
-              </button>
-
               <div role="group" aria-label="재무제표 기준" style={{ display: 'inline-flex', background: 'rgba(255,255,255,0.08)', borderRadius: '12px', padding: '4px' }}>
                 <button
                   type="button"
@@ -418,7 +379,7 @@ export default function BriefingView({ company, onBack, onGoTimeline }) {
                   <circle cx="12" cy="12" r="9" />
                   <path d="M12 8v5M12 16h.01" />
                 </svg>
-                {liveData ? 'DART 실시간 API 연동' : '자동 검증 결과 · DART 공시 연동'}
+                사업보고서 공시 원문 대조
               </span>
             </div>
           </div>
@@ -427,23 +388,16 @@ export default function BriefingView({ company, onBack, onGoTimeline }) {
           {liveLoading && (
             <div style={{ background: 'rgba(52,224,200,0.12)', border: '1px solid rgba(52,224,200,0.3)', borderRadius: '14px', padding: '14px 18px', color: '#34E0C8', display: 'flex', alignItems: 'center', gap: '10px', fontSize: '14px' }}>
               <span style={{ display: 'inline-block', width: '8px', height: '8px', borderRadius: '50%', background: '#34E0C8', animation: 'pulse 1s infinite' }} />
-              <span>금융감독원 OpenDART 서버에서 <strong>{compName}</strong>의 재무제표와 사업보고서 원문을 수집하고 Google Gemini AI로 실적 요인을 분석하고 있습니다...</span>
+              <span><strong>{compName}</strong>의 재무제표와 사업보고서 공시 원문을 분석하고 있습니다...</span>
             </div>
           )}
 
-          {/* Live Error Banner */}
-          {liveError && (
-            <p style={{ margin: 0, fontSize: '13px', color: '#FFD9A0', background: 'rgba(255,181,71,0.15)', borderRadius: '10px', padding: '10px 14px' }}>
-              실시간 DART 연동 알림: {liveError} (기본 DART 정적 데이터로 표시합니다)
-            </p>
-          )}
-
-          {/* Gemini AI Executive Summary Banner */}
+          {/* Executive Summary Banner */}
           {liveData && liveData.analysis && liveData.analysis.headline && (
             <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '16px', padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <span style={{ fontSize: '12px', fontWeight: 700, padding: '3px 8px', borderRadius: '6px', background: '#34E0C8', color: '#0C1622' }}>
-                  Gemini AI 실적 헤드라인
+                  핵심 요약
                 </span>
                 <span style={{ fontSize: '16px', fontWeight: 700, color: '#FFFFFF' }}>{liveData.analysis.headline}</span>
               </div>

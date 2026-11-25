@@ -122,11 +122,11 @@ export default function MainView({ onSelectCompany }) {
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxWidth: '560px', marginTop: '4px', position: 'relative' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <label htmlFor="q" style={{ fontSize: '13px', color: '#B9C8D6', fontWeight: 500 }}>기업명 또는 종목코드 (국내 4,021개 전 상장사 실시간 검색)</label>
+              <label htmlFor="q" style={{ fontSize: '13px', color: '#B9C8D6', fontWeight: 500 }}>기업명 또는 종목코드</label>
               {isSearchingLive && (
                 <span style={{ fontSize: '12px', color: '#34E0C8', display: 'flex', alignItems: 'center', gap: '4px' }}>
                   <span style={{ display: 'inline-block', width: '6px', height: '6px', borderRadius: '50%', background: '#34E0C8', animation: 'pulse 1s infinite' }} />
-                  DART 검색 중...
+                  검색 중...
                 </span>
               )}
             </div>
@@ -154,7 +154,7 @@ export default function MainView({ onSelectCompany }) {
               )}
             </div>
 
-            {/* Live OpenDART Search Dropdown */}
+            {/* Live Search Dropdown */}
             {liveMatches.length > 0 && (
               <div style={{
                 position: 'absolute', top: '100%', left: 0, right: 0, marginTop: '8px',
@@ -163,9 +163,8 @@ export default function MainView({ onSelectCompany }) {
               }}>
                 <div style={{ padding: '12px 18px', background: '#0C1622', color: '#EAF1F7', fontSize: '13px', fontWeight: 700, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span style={{ color: '#34E0C8', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    ⚡ OpenDART 전체 상장사 실시간 검색 ({liveMatches.length}개 발견)
+                    상장사 검색 결과 ({liveMatches.length}건)
                   </span>
-                  <span style={{ fontSize: '11px', color: '#93A6B8' }}>Google Gemini AI 실시간 분석</span>
                 </div>
                 <div style={{ maxHeight: '280px', overflowY: 'auto' }}>
                   {liveMatches.map((comp) => (
@@ -197,7 +196,7 @@ export default function MainView({ onSelectCompany }) {
                         </span>
                       </div>
                       <span style={{ fontSize: '13px', fontWeight: 700, color: '#0B7A70', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                        실시간 AI 브리핑 →
+                        실적 브리핑 보기 →
                       </span>
                     </button>
                   ))}
@@ -274,13 +273,13 @@ export default function MainView({ onSelectCompany }) {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '8px' }}>
                 <span style={{ fontSize: '18px', fontWeight: 700, color: '#10161E', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <span>⚡ OpenDART 전체 상장사 검색 결과</span>
+                  <span>전체 상장사 검색 결과</span>
                   <span style={{ fontSize: '13px', color: '#0B7A70', background: '#E3F5F2', padding: '3px 10px', borderRadius: '999px', fontWeight: 600 }}>
                     {liveMatches.length}개 발견
                   </span>
                 </span>
                 <span style={{ fontSize: '12px', color: '#64748B' }}>
-                  금융감독원 DART 공시 원문 & Gemini AI 실적 분석
+                  사업보고서 공시 원문 분석
                 </span>
               </div>
 
@@ -300,12 +299,12 @@ export default function MainView({ onSelectCompany }) {
                         <span style={{ fontSize: '13px', color: '#64748B' }}>{comp.stock_code} · 상장사</span>
                       </div>
                       <span style={{ fontSize: '11px', fontWeight: 700, padding: '4px 8px', borderRadius: '6px', background: '#E3F5F2', color: '#075F57' }}>
-                        DART 실시간 연동
+                        사업보고서
                       </span>
                     </div>
 
                     <p style={{ margin: 0, fontSize: '13px', color: '#4A5563', lineHeight: 1.55 }}>
-                      DART 확정 손익계산서 주요 계정(매출액, 영업이익) 및 Gemini AI 실적 요인 브리핑이 제공됩니다.
+                      공시된 손익계산서 주요 계정(매출액, 영업이익) 및 실적 요인 브리핑이 제공됩니다.
                     </p>
 
                     <button
@@ -324,7 +323,7 @@ export default function MainView({ onSelectCompany }) {
                         display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '6px'
                       }}
                     >
-                      실시간 DART 브리핑 보기 →
+                      실적 브리핑 보기 →
                     </button>
                   </article>
                 ))}
