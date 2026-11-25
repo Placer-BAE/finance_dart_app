@@ -1,9 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export default function MainView({ onSelectCompany }) {
   const [q, setQ] = useState('');
   const [market, setMarket] = useState('kospi'); // 'kospi' or 'kosdaq'
   const [sort, setSort] = useState('recent'); // 'recent', 'popular', 'rank'
+  const [liveMatches, setLiveMatches] = useState([]);
+  const [isSearchingLive, setIsSearchingLive] = useState(false);
+
+  // Live OpenDART Search Debounced
+  useEffect(() => {
+    const query = (q || '').trim();
+    if (query.length >= 2) {
+      const timer = setTimeout(async () => {
+        try {
+          setIsSearchingLive(true);
+          const res = await fetch(`/api/live/search?q=${encodeURIComponent(query)}`);
+          if (res.ok) {
+            const data = await res.json();
+            setLiveMatches(data.companies || []);
+          }
+        } catch (e) {
+          setLiveMatches([]);
+        } finally {
+          setIsSearchingLive(false);
+        }
+      }, 250);
+      return () => clearTimeout(timer);
+    } else {
+      setLiveMatches([]);
+    }
+  }, [q]);
 
   const UP = '#FF6B7D', DOWN = '#6EA2FF', NA = '#93A6B8';
   const c = (rank, name, code, rev, revD, op, opD, mg, mgD, cause, causeKind, views, upd, badge) => ({
@@ -83,8 +109,16 @@ export default function MainView({ onSelectCompany }) {
           <h1 style={{ margin: 0, fontSize: '46px', lineHeight: 1.2, letterSpacing: '-0.03em', fontWeight: 700, maxWidth: '760px' }}>실적이 왜 달라졌을까?</h1>
           <p style={{ margin: 0, fontSize: '18px', lineHeight: 1.6, color: '#B9C8D6', maxWidth: '640px' }}>사업보고서 속 회사의 설명을 원문 그대로 찾아드립니다.</p>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxWidth: '560px', marginTop: '4px' }}>
-            <label htmlFor="q" style={{ fontSize: '13px', color: '#B9C8D6', fontWeight: 500 }}>기업명 또는 종목코드</label>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxWidth: '560px', marginTop: '4px', position: 'relative' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <label htmlFor="q" style={{ fontSize: '13px', color: '#B9C8D6', fontWeight: 500 }}>기업명 또는 종목코드 (국내 4,021개 전 상장사 실시간 검색)</label>
+              {isSearchingLive && (
+                <span style={{ fontSize: '12px', color: '#34E0C8', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <span style={{ display: 'inline-block', width: '6px', height: '6px', borderRadius: '50%', background: '#34E0C8', animation: 'pulse 1s infinite' }} />
+                  DART 검색 중...
+                </span>
+              )}
+            </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', background: '#FFFFFF', borderRadius: '14px', padding: '0 16px', minHeight: '56px', boxShadow: '0 8px 24px rgba(0,0,0,0.15)' }}>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6B7380" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
                 <circle cx="11" cy="11" r="7" />
@@ -95,19 +129,70 @@ export default function MainView({ onSelectCompany }) {
                 type="search"
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
-                placeholder="예: 삼성전자, 005930"
+                placeholder="예: 카카오, 하이브, 삼성전자, 035720"
                 style={{ flex: 1, border: 0, fontSize: '17px', fontFamily: 'inherit', color: '#10161E', background: 'transparent', minHeight: '52px', outline: 'none' }}
               />
               {q && (
                 <button
                   type="button"
-                  onClick={() => setQ('')}
+                  onClick={() => { setQ(''); setLiveMatches([]); }}
                   style={{ border: 0, background: 'none', color: '#9CA3AF', cursor: 'pointer', padding: '4px', fontSize: '14px' }}
                 >
                   ✕
                 </button>
               )}
             </div>
+
+            {/* Live OpenDART Search Dropdown */}
+            {liveMatches.length > 0 && (
+              <div style={{
+                position: 'absolute', top: '100%', left: 0, right: 0, marginTop: '8px',
+                background: '#FFFFFF', borderRadius: '16px', boxShadow: '0 16px 40px rgba(0,0,0,0.3)',
+                border: '1px solid #E3E7EC', zIndex: 999, overflow: 'hidden'
+              }}>
+                <div style={{ padding: '12px 18px', background: '#0C1622', color: '#EAF1F7', fontSize: '13px', fontWeight: 700, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ color: '#34E0C8', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    ⚡ OpenDART 전체 상장사 실시간 검색 ({liveMatches.length}개 발견)
+                  </span>
+                  <span style={{ fontSize: '11px', color: '#93A6B8' }}>Google Gemini AI 실시간 분석</span>
+                </div>
+                <div style={{ maxHeight: '280px', overflowY: 'auto' }}>
+                  {liveMatches.map((comp) => (
+                    <button
+                      key={comp.corp_code}
+                      type="button"
+                      onClick={() => {
+                        setQ('');
+                        setLiveMatches([]);
+                        onSelectCompany({
+                          name: comp.corp_name,
+                          code: comp.stock_code,
+                          corp_code: comp.corp_code,
+                          isLive: true
+                        });
+                      }}
+                      style={{
+                        width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                        padding: '12px 18px', border: 0, background: '#FFFFFF', borderBottom: '1px solid #F1F5F9',
+                        cursor: 'pointer', textAlign: 'left', fontFamily: 'inherit'
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.background = '#F0FAF8'}
+                      onMouseLeave={(e) => e.currentTarget.style.background = '#FFFFFF'}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <span style={{ fontSize: '15px', fontWeight: 700, color: '#10161E' }}>{comp.corp_name}</span>
+                        <span style={{ fontSize: '12px', color: '#64748B', background: '#F1F5F9', padding: '2px 8px', borderRadius: '6px' }}>
+                          {comp.stock_code}
+                        </span>
+                      </div>
+                      <span style={{ fontSize: '13px', fontWeight: 700, color: '#0B7A70', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        실시간 AI 브리핑 →
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </section>
