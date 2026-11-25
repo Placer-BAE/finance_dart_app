@@ -56,6 +56,7 @@ export default function App() {
 
       {activeTab === 'briefing' && (
         <BriefingView
+          key={selectedCompany ? (selectedCompany.code || selectedCompany.name) : 'default'}
           company={selectedCompany}
           onBack={() => setActiveTab('main')}
           onGoTimeline={handleGoTimeline}
