@@ -99,22 +99,30 @@ class LLMClient:
         return self._generate_grounded_fallback(company, year, metrics, sources)
 
     async def _call_gemini(self, system: str, prompt: str) -> Optional[Dict]:
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={self.gemini_key}"
-        payload = {
-            "contents": [
-                {"role": "user", "parts": [{"text": f"{system}\n\n{prompt}"}]}
-            ],
-            "generationConfig": {
-                "response_mime_type": "application/json",
-                "temperature": 0.2
+        models = ["gemini-flash-lite-latest", "gemini-flash-latest", "gemini-3.8-flash"]
+        for m in models:
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/{m}:generateContent?key={self.gemini_key}"
+            payload = {
+                "contents": [
+                    {"role": "user", "parts": [{"text": f"{system}\n\n{prompt}"}]}
+                ],
+                "generationConfig": {
+                    "response_mime_type": "application/json",
+                    "temperature": 0.2
+                }
             }
-        }
-        async with httpx.AsyncClient(timeout=20.0) as client:
-            resp = await client.post(url, json=payload)
-            if resp.status_code == 200:
-                data = resp.json()
-                text = data["candidates"][0]["content"]["parts"][0]["text"]
-                return json.loads(text)
+            try:
+                async with httpx.AsyncClient(timeout=25.0) as client:
+                    resp = await client.post(url, json=payload)
+                    if resp.status_code == 200:
+                        data = resp.json()
+                        text = data["candidates"][0]["content"]["parts"][0]["text"]
+                        res_json = json.loads(text)
+                        res_json["_model"] = m
+                        return res_json
+            except Exception as e:
+                print(f"[LLM] Gemini {m} attempt failed: {e}")
+                continue
         return None
 
     async def _call_openai(self, system: str, prompt: str) -> Optional[Dict]:
